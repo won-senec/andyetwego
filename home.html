@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>and yet we go | Won Kyun Koh</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style_for_all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+<body class="min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="home.html" class="wordmark-nav">and <span class="pivot">yet</span> we go</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="home.html" class="text-gray-700 hover:text-indigo-600 transition">Home</a>
+                    <a href="entries_all.html" class="text-gray-700 hover:text-indigo-600 transition">Entries</a>
+                    <a href="#topics" class="text-gray-700 hover:text-indigo-600 transition">Topics</a>
+                    <a href="services.html" class="text-gray-700 hover:text-indigo-600 transition">Services</a>
+                    <a href="about.html" class="text-gray-700 hover:text-indigo-600 transition">About</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-indigo-600 transition">Contact</a>
+                </div>
+
+                <div class="flex items-center md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white py-2 px-4 shadow-lg">
+            <a href="home.html" class="block py-2 text-gray-700 hover:text-indigo-600 transition">Home</a>
+            <a href="entries_all.html" class="block py-2 text-gray-700 hover:text-indigo-600 transition">Entries</a>
+            <a href="#topics" class="block py-2 text-gray-700 hover:text-indigo-600 transition">Topics</a>
+            <a href="services.html" class="block py-2 text-gray-700 hover:text-indigo-600 transition">Services</a>
+            <a href="about.html" class="block py-2 text-gray-700 hover:text-indigo-600 transition">About</a>
+            <a href="contact.html" class="block py-2 text-gray-700 hover:text-indigo-600 transition">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="site-hero">
+        <div class="hero-dots"></div>
+        <div class="hero-inner">
+            <div class="hero-copy">
+                <h1 class="wordmark">and <span class="pivot">yet</span> we go</h1>
+                <p class="hero-tagline">
+                    Three things I keep coming back to: what I think about, what I make, and what I watch.
+                </p>
+                <a class="hero-cta" href="#latest-entries">
+                    Read the latest
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="hero-figure">
+                <svg viewBox="0 0 210 190" width="210" height="190" aria-hidden="true">
+                    <line x1="46" y1="42" x2="164" y2="76" stroke="#B5D2E6" stroke-opacity=".45" stroke-width="1.5"/>
+                    <line x1="164" y1="76" x2="76" y2="150" stroke="#B5D2E6" stroke-opacity=".45" stroke-width="1.5"/>
+                    <line x1="76" y1="150" x2="46" y2="42" stroke="#B5D2E6" stroke-opacity=".28" stroke-width="1.5"/>
+                </svg>
+                <a class="hero-node" href="entries_thoughts.html" style="left: 46px; top: 42px;" aria-label="Thoughts"><span class="node-dot" style="background: rgba(93, 163, 220, .5); animation-delay: 0s;"><i class="fas fa-lightbulb"></i></span><span class="node-label">Thoughts</span></a>
+                <a class="hero-node" href="entries_creations.html" style="left: 164px; top: 76px;" aria-label="Creations"><span class="node-dot" style="background: rgba(255, 241, 231, .42); animation-delay: 1.1s;"><i class="fas fa-code"></i></span><span class="node-label">Creations</span></a>
+                <a class="hero-node" href="entries_films.html" style="left: 76px; top: 150px;" aria-label="Reviews"><span class="node-dot" style="background: rgba(128, 82, 50, .6); animation-delay: 2.2s;"><i class="fas fa-film"></i></span><span class="node-label">Reviews</span></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+        <!-- Featured Post -->
+        <section class="mb-20">
+            <h2 class="text-2xl font-bold mb-10 flex items-center">
+                <span class="w-4 h-4 rounded-full mr-3" style="background:#805232;"></span>
+                Featured Entry
+            </h2>
+            <div class="flex justify-center">
+                <article class="post-card featured-card bg-white rounded-xl overflow-hidden animate-fade-in max-w-5xl w-full">
+                    <div class="flex flex-col md:flex-row">
+                        <!-- Text -->
+                        <div class="md:w-1/2 p-8 flex flex-col justify-center">
+                            <div class="flex items-center mb-4">
+                        
+                        
+<!--*** Topic -->
+                  <span class="badge badge-reviews">Reviews</span>
+<!--*** Date -->                    
+                    <span class="text-gray-400 text-sm ml-4">April 24th, 2025</span>
+                </div>
+<!--*** Title -->  
+                            <h3 class="text-2xl font-bold mb-4 text-gray-900">
+                                Sinners (2025)
+                            </h3>
+<!--*** Tagline-->
+                            <p class="text-gray-600 mb-6">
+                                A Blood-Soaked Symphony of Brotherhood and Blues: Sinners (2025)
+
+                            </p>
+
+<!--*** Share Link-->                           
+                            <a href="entry_Films_Sinners.html"
+                               class="read-more-link text-indigo-600 font-semibold inline-flex items-center">
+                                Read More
+                                <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                            </a>
+
+                            <div class="flex items-center mt-6 space-x-6 text-sm">
+                                <button class="like-button flex items-center text-gray-500 hover:text-red-500 transition" data-liked="false">
+                                    <i class="far fa-heart mr-2"></i>
+<!--*** Likes #-->                                    
+                                    <span class="like-count">0</span>
+                                </button>
+                                <button class="share-button flex items-center text-gray-500 hover:text-indigo-600 transition">
+                                    <i class="fas fa-share-alt mr-2"></i> Share
+                                </button>
+                            </div>
+                        </div>
+
+<!--*** Image -->
+                        <div class="md:w-1/2 h-64 md:h-auto">
+                            <img src="images/sinners.jpg"
+                                 alt="Productivity"
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex items-center mb-2"></div>
+                        
+
+                    </div>
+                </article>
+            </div>
+        </section>
+
+
+
+        <!-- Latest Entries -->
+        <section id="latest-entries" class="mb-20">
+            <h2 class="text-2xl font-bold mb-10 flex items-center">
+                <span class="w-4 h-4 rounded-full mr-3" style="background:#5da3dc;"></span>
+                Latest Entries
+            </h2>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+
+
+
+
+<!-- thumbnail-entry_Films_CivilWar.html -->
+<article class="post-card bg-white rounded-xl overflow-hidden shadow-md animate-fade-in">
+    <img src="images/civilwar.jpg" alt="History" class="w-full h-48 object-cover">
+    <div class="p-6">
+        <div class="flex items-center mb-4">
+            <span class="badge badge-reviews">Reviews</span>
+            <span class="text-gray-400 text-sm ml-4">April 18th, 2025</span>
+        </div>
+        <h3 class="text-lg font-bold mb-3 text-gray-900">Civil War (2024)</h3>
+        <p class="text-gray-600 mb-4">A Haunting Mirror of America&#x27;s Fractured Present: Civil War (2024)</p>
+        <a href="entry_Films_CivilWar.html" class="read-more-link text-indigo-600 font-semibold inline-flex items-center">
+            Read More
+            <i class="fas fa-arrow-right ml-2 text-sm"></i>
+        </a>
+        <div class="flex items-center mt-5 space-x-6 text-sm">
+            <button class="like-button flex items-center text-gray-500 hover:text-red-500 transition" data-liked="false">
+                <i class="far fa-heart mr-2"></i>
+                <span class="like-count">0</span>
+            </button>
+            <button class="share-button flex items-center text-gray-500 hover:text-indigo-600 transition">
+                <i class="fas fa-share-alt mr-2"></i> Share
+            </button>
+        </div>
+    </div>
+</article>
+<!-- /thumbnail-entry_Films_CivilWar.html -->
+<!-- thumbnail-entry_Thoughts_MarcMaronsWTFPodcast.html -->
+       <article class="post-card bg-white rounded-xl overflow-hidden shadow-md animate-fade-in">
+           <img src="images/marcmaron.jpg" alt="History" class="w-full h-48 object-cover">
+           <div class="p-6">
+               <div class="flex items-center mb-4">
+                   <span class="badge badge-thoughts">Thoughts</span>
+                   <span class="text-gray-400 text-sm ml-4">May 10th, 2023</span>
+               </div>
+               <h3 class="text-lg font-bold mb-3 text-gray-900">Marc Maron’s WTF podcast</h3>
+               <p class="text-gray-600 mb-4">My therapist has a microphone: Marc Maron’s WTF podcast</p>
+               <a href="entry_Thoughts_MarcMaronsWTFPodcast.html" class="read-more-link text-indigo-600 font-semibold inline-flex items-center">
+                   Read More
+                   <i class="fas fa-arrow-right ml-2 text-sm"></i>
+               </a>
+               <div class="flex items-center mt-5 space-x-6 text-sm">
+                   <button class="like-button flex items-center text-gray-500 hover:text-red-500 transition" data-liked="false">
+                       <i class="far fa-heart mr-2"></i>
+                       <span class="like-count">0</span>
+                   </button>
+                   <button class="share-button flex items-center text-gray-500 hover:text-indigo-600 transition">
+                       <i class="fas fa-share-alt mr-2"></i> Share
+                   </button>
+               </div>
+           </div>
+       </article>
+       <!-- /thumbnail-entry_Thoughts_MarcMaronsWTFPodcast.html -->
+
+
+ <!-- thumbnail-entry_Films_Exhuma.html -->
+ <article class="post-card bg-white rounded-xl overflow-hidden shadow-md animate-fade-in">
+     <img src="images/exhuma.jpg" alt="History" class="w-full h-48 object-cover">
+     <div class="p-6">
+         <div class="flex items-center mb-4">
+             <span class="badge badge-reviews">Reviews</span>
+             <span class="text-gray-400 text-sm ml-4">June 1st, 2026</span>
+         </div>
+         <h3 class="text-lg font-bold mb-3 text-gray-900">Exhuma (2024)</h3>
+         <p class="text-gray-600 mb-4">Faith, soil, and the courage to dig: Exhuma (2024)</p>
+         <a href="entry_Films_Exhuma.html" class="read-more-link text-indigo-600 font-semibold inline-flex items-center">
+             Read More
+             <i class="fas fa-arrow-right ml-2 text-sm"></i>
+         </a>
+         <div class="flex items-center mt-5 space-x-6 text-sm">
+             <button class="like-button flex items-center text-gray-500 hover:text-red-500 transition" data-liked="false">
+                 <i class="far fa-heart mr-2"></i>
+                 <span class="like-count">0</span>
+             </button>
+             <button class="share-button flex items-center text-gray-500 hover:text-indigo-600 transition">
+                 <i class="fas fa-share-alt mr-2"></i> Share
+             </button>
+         </div>
+     </div>
+ </article>
+ <!-- /thumbnail-entry_Films_Exhuma.html -->
+  <!-- thumbnail-entry_Films_TotalRecall.html -->
+  <article class="post-card bg-white rounded-xl overflow-hidden shadow-md animate-fade-in">
+      <img src="images/totalrecall.jpg" alt="History" class="w-full h-48 object-cover">
+      <div class="p-6">
+          <div class="flex items-center mb-4">
+              <span class="badge badge-reviews">Reviews</span>
+              <span class="text-gray-400 text-sm ml-4">May 29th, 2026</span>
+          </div>
+          <h3 class="text-lg font-bold mb-3 text-gray-900">Total Recall (1990)</h3>
+          <p class="text-gray-600 mb-4">Who owns your memory?: Total Recall (1990)</p>
+          <a href="entry_Films_TotalRecall.html" class="read-more-link text-indigo-600 font-semibold inline-flex items-center">
+              Read More
+              <i class="fas fa-arrow-right ml-2 text-sm"></i>
+          </a>
+          <div class="flex items-center mt-5 space-x-6 text-sm">
+              <button class="like-button flex items-center text-gray-500 hover:text-red-500 transition" data-liked="false">
+                  <i class="far fa-heart mr-2"></i>
+                  <span class="like-count">0</span>
+              </button>
+              <button class="share-button flex items-center text-gray-500 hover:text-indigo-600 transition">
+                  <i class="fas fa-share-alt mr-2"></i> Share
+              </button>
+          </div>
+      </div>
+  </article>
+  <!-- /thumbnail-entry_Films_TotalRecall.html -->
+   <!-- thumbnail-entry_Films_ToLeslie.html -->
+   <article class="post-card bg-white rounded-xl overflow-hidden shadow-md animate-fade-in">
+       <img src="images/toleslie.jpg" alt="History" class="w-full h-48 object-cover">
+       <div class="p-6">
+           <div class="flex items-center mb-4">
+               <span class="badge badge-reviews">Reviews</span>
+               <span class="text-gray-400 text-sm ml-4">June 3rd, 2023</span>
+           </div>
+           <h3 class="text-lg font-bold mb-3 text-gray-900">To Leslie (2022)</h3>
+           <p class="text-gray-600 mb-4">Small film, big heart: To Leslie (2022)</p>
+           <a href="entry_Films_ToLeslie.html" class="read-more-link text-indigo-600 font-semibold inline-flex items-center">
+               Read More
+               <i class="fas fa-arrow-right ml-2 text-sm"></i>
+           </a>
+           <div class="flex items-center mt-5 space-x-6 text-sm">
+               <button class="like-button flex items-center text-gray-500 hover:text-red-500 transition" data-liked="false">
+                   <i class="far fa-heart mr-2"></i>
+                   <span class="like-count">0</span>
+               </button>
+               <button class="share-button flex items-center text-gray-500 hover:text-indigo-600 transition">
+                   <i class="fas fa-share-alt mr-2"></i> Share
+               </button>
+           </div>
+       </div>
+   </article>
+   <!-- /thumbnail-entry_Films_ToLeslie.html -->
+
+<!-- thumbnail-entry_Thoughts_GracePeriod.html -->
+     <article class="post-card bg-white rounded-xl overflow-hidden shadow-md animate-fade-in">
+         <div class="thumb-placeholder ph-thoughts w-full h-48"><span class="ph-icon"><i class="fas fa-lightbulb"></i></span><span class="ph-label">Thoughts</span></div>
+         <div class="p-6">
+             <div class="flex items-center mb-4">
+                 <span class="badge badge-thoughts">Thoughts</span>
+                 <span class="text-gray-400 text-sm ml-4">June 4th, 2026</span>
+             </div>
+             <h3 class="text-lg font-bold mb-3 text-gray-900">Grace period</h3>
+             <p class="text-gray-600 mb-4">I thought I would feel lost. I found a reason instead: the grace period</p>
+             <a href="entry_Thoughts_GracePeriod.html" class="read-more-link text-indigo-600 font-semibold inline-flex items-center">
+                 Read More
+                 <i class="fas fa-arrow-right ml-2 text-sm"></i>
+             </a>
+             <div class="flex items-center mt-5 space-x-6 text-sm">
+                 <button class="like-button flex items-center text-gray-500 hover:text-red-500 transition" data-liked="false">
+                     <i class="far fa-heart mr-2"></i>
+                     <span class="like-count">0</span>
+                 </button>
+                 <button class="share-button flex items-center text-gray-500 hover:text-indigo-600 transition">
+                     <i class="fas fa-share-alt mr-2"></i> Share
+                 </button>
+             </div>
+         </div>
+     </article>
+     <!-- /thumbnail-entry_Thoughts_GracePeriod.html -->
+
+
+    <!-- thumbnail-entry_Films_three_shows.html -->
+    <article class="post-card bg-white rounded-xl overflow-hidden shadow-md animate-fade-in">
+        <img src="images/bly-manor.jpg" alt="History" class="w-full h-48 object-cover">
+        <div class="p-6">
+            <div class="flex items-center mb-4">
+                <span class="badge badge-reviews">Films</span>
+                <span class="text-gray-400 text-sm ml-4">April 27th, 2023</span>
+            </div>
+            <h3 class="text-lg font-bold mb-3 text-gray-900">Three Shows That Changed How I See Stories</h3>
+            <p class="text-gray-600 mb-4">When prestige TV gets it right—family, fear, and the fight for truth in three unforgettable series.</p>
+            <a href="entry_Films_three_shows.html" class="read-more-link text-indigo-600 font-semibold inline-flex items-center">
+                Read More
+                <i class="fas fa-arrow-right ml-2 text-sm"></i>
+            </a>
+            <div class="flex items-center mt-5 space-x-6 text-sm">
+                <button class="like-button flex items-center text-gray-500 hover:text-red-500 transition" data-liked="false">
+                    <i class="far fa-heart mr-2"></i>
+                    <span class="like-count">0</span>
+                </button>
+                <button class="share-button flex items-center text-gray-500 hover:text-indigo-600 transition">
+                    <i class="fas fa-share-alt mr-2"></i> Share
+                </button>
+            </div>
+        </div>
+    </article>
+    <!-- /thumbnail-entry_Films_three_shows.html -->
+     
+      <!-- thumbnail-entry_Thoughts_Wave.html -->
+      <article class="post-card bg-white rounded-xl overflow-hidden shadow-md animate-fade-in">
+          <div class="thumb-placeholder ph-thoughts w-full h-48"><span class="ph-icon"><i class="fas fa-lightbulb"></i></span><span class="ph-label">Thoughts</span></div>
+          <div class="p-6">
+              <div class="flex items-center mb-4">
+                  <span class="badge badge-thoughts">Thoughts</span>
+                  <span class="text-gray-400 text-sm ml-4">May 20th, 2026</span>
+              </div>
+              <h3 class="text-lg font-bold mb-3 text-gray-900">Wave 파도 (written in Korean)</h3>
+              <p class="text-gray-600 mb-4">잔잔한 파도가 되기까지</p>
+              <a href="entry_Thoughts_Wave.html" class="read-more-link text-indigo-600 font-semibold inline-flex items-center">
+                  Read More
+                  <i class="fas fa-arrow-right ml-2 text-sm"></i>
+              </a>
+              <div class="flex items-center mt-5 space-x-6 text-sm">
+                  <button class="like-button flex items-center text-gray-500 hover:text-red-500 transition" data-liked="false">
+                      <i class="far fa-heart mr-2"></i>
+                      <span class="like-count">0</span>
+                  </button>
+                  <button class="share-button flex items-center text-gray-500 hover:text-indigo-600 transition">
+                      <i class="fas fa-share-alt mr-2"></i> Share
+                  </button>
+              </div>
+          </div>
+      </article>
+      <!-- /thumbnail-entry_Thoughts_Wave.html -->
+       
+        <!-- thumbnail-entry_Thoughts_AI.html -->
+        <article class="post-card bg-white rounded-xl overflow-hidden shadow-md animate-fade-in">
+            <div class="thumb-placeholder ph-thoughts w-full h-48"><span class="ph-icon"><i class="fas fa-lightbulb"></i></span><span class="ph-label">Thoughts</span></div>
+            <div class="p-6">
+                <div class="flex items-center mb-4">
+                    <span class="badge badge-thoughts">Thoughts</span>
+                    <span class="text-gray-400 text-sm ml-4">June 7th, 2026</span>
+                </div>
+                <h3 class="text-lg font-bold mb-3 text-gray-900">Artificial Intelligence</h3>
+                <p class="text-gray-600 mb-4">Coexisting with the inevitable: Artificial Intelligence</p>
+                <a href="entry_Thoughts_AI.html" class="read-more-link text-indigo-600 font-semibold inline-flex items-center">
+                    Read More
+                    <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                </a>
+                <div class="flex items-center mt-5 space-x-6 text-sm">
+                    <button class="like-button flex items-center text-gray-500 hover:text-red-500 transition" data-liked="false">
+                        <i class="far fa-heart mr-2"></i>
+                        <span class="like-count">0</span>
+                    </button>
+                    <button class="share-button flex items-center text-gray-500 hover:text-indigo-600 transition">
+                        <i class="fas fa-share-alt mr-2"></i> Share
+                    </button>
+                </div>
+            </div>
+        </article>
+        <!-- /thumbnail-entry_Thoughts_AI.html -->
+
+
+
+
+   </div>
+
+            <div class="text-center mt-12">
+                <a href="entries_all.html"
+                   class="inline-block bg-[#28323d] text-white font-semibold px-8 py-3 rounded-lg hover:bg-[#1f2730] transition">
+                    View All Entries
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </section>
+              
+
+        <!-- Explore Topics -->
+        <section id="topics" class="mb-16 scroll-mt-24">
+            <h2 class="text-2xl font-bold mb-8 flex items-center">
+                <span class="w-4 h-4 rounded-full mr-3" style="background:#326080;"></span>
+                Explore Topics
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <a href="entries_thoughts.html" class="relative overflow-hidden p-6 rounded-b-xl shadow-sm hover:shadow-md transition text-center border border-white/10"
+                   style="border-top: 4px solid #5da3dc; background-color: #28323d; background-image: radial-gradient(rgba(255, 255, 255, .07) 1.3px, transparent 1.3px); background-size: 20px 20px;">
+                    <div class="relative w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background: rgba(93, 163, 220, .5); border: 1.5px solid rgba(181, 210, 230, .6); color: #fff;">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <span class="relative font-bold text-white">Thoughts</span>
+                </a>
+                <a href="entries_creations.html" class="relative overflow-hidden p-6 rounded-b-xl shadow-sm hover:shadow-md transition text-center border border-white/10"
+                   style="border-top: 4px solid #84acce; background-color: #28323d; background-image: radial-gradient(rgba(255, 255, 255, .07) 1.3px, transparent 1.3px); background-size: 20px 20px;">
+                    <div class="relative w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background: rgba(255, 241, 231, .42); border: 1.5px solid rgba(181, 210, 230, .6); color: #fff;">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <span class="relative font-bold text-white">Creations</span>
+                </a>
+                <a href="entries_films.html" class="relative overflow-hidden p-6 rounded-b-xl shadow-sm hover:shadow-md transition text-center border border-white/10"
+                   style="border-top: 4px solid #b97a45; background-color: #28323d; background-image: radial-gradient(rgba(255, 255, 255, .07) 1.3px, transparent 1.3px); background-size: 20px 20px;">
+                    <div class="relative w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background: rgba(128, 82, 50, .6); border: 1.5px solid rgba(181, 210, 230, .6); color: #fff;">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <span class="relative font-bold text-white">Reviews</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-dots"></div>
+        <div class="footer-inner">
+            <h3 class="wordmark">and <span class="pivot">yet</span> we go</h3>
+            <p class="footer-tagline">
+                Once every two weeks, I reflect on something worth sharing. 
+        <br>
+                One thought. One creation. One review.
+            </br> 
+            </p>
+            <p class="footer-tagline">
+                First and third Tuesdays. Free. 
+            </p>
+            <form class="footer-subscribe"
+                  action="https://buttondown.com/api/emails/embed-subscribe/andyetwego"
+                  method="post">
+                <input type="email" name="email" placeholder="your email" aria-label="Email address" required>
+                <button type="submit">Subscribe</button>
+                <p class="footer-tagline">Unsubscribe at any time. </p>
+            </form>
+            <p class="footer-subscribe-status" role="status" aria-live="polite"></p>
+            <div class="footer-links">
+                <a href="entries_thoughts.html">Thoughts</a>
+                <a href="entries_creations.html">Creations</a>
+                <a href="entries_films.html">Reviews</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-bottom">&copy; 2026 Won Kyun Koh. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <!-- Share Modal -->
+    <div id="share-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-lg max-w-md w-full mx-4 p-6 animate-fade-in">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-800">Share Article</h3>
+                <button id="close-modal" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <p class="text-sm text-gray-600 mb-2">Article link</p>
+
+            <div class="flex items-center border rounded-lg overflow-hidden mb-4">
+                <input id="share-link" type="text" readonly
+                       class="flex-grow px-3 py-2 text-sm text-gray-700 focus:outline-none">
+                <button id="copy-link"
+                        class="bg-indigo-600 text-white px-4 py-2 text-sm hover:bg-indigo-700 transition">
+                    Copy
+                </button>
+            </div>
+
+            <div class="flex justify-end gap-3">
+                <button id="close-modal-btn"
+                        class="px-4 py-2 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

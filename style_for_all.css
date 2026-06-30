@@ -1,0 +1,668 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&display=swap');
+
+/* ============================================================
+   1. CROSS-PLATFORM RESET & BASE
+   ============================================================ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* Removes blue tap highlight on iOS/Android */
+}
+
+/* ============================================================
+   UNIFIED COLOR PALETTE
+   ============================================================ */
+:root {
+    /* Primary Brand Colors (Blues) */
+    --primary: #326080;       /* Deep Slate Blue */
+    --primary-light: #5da3dc; /* Bright Sky Blue */
+    --secondary: #B5D2E6;     /* Soft Pastel Blue */
+    
+    /* Accent & Typography (Browns/Darks) */
+    --dark: #28323d;          /* Slate ink — calmer than saturated indigo for body text */
+    --accent: #805232;        /* Earth Brown from your contact page */
+    --light: #FFF1E7;         /* Warm Cream background */
+    
+    /* Feedback Colors */
+    --success: #10b981;
+    --error: #ef4444;
+    
+    --transition: all 0.3s ease;
+}
+
+/* Add this utility class to use the new brown accent */
+.text-accent {
+    color: var(--accent);
+}
+
+.bg-accent {
+    background-color: var(--accent);
+}
+
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%; /* Prevents font scaling issues on mobile */
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    /* Native system font stack for PC and Mac */
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #ffffff;
+    color: var(--dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+    
+    /* Better font rendering for macOS/iOS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* iOS Notch & Dynamic Island Support */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+img, video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ============================================================
+   2. REUSABLE COMPONENTS & UTILITIES
+   ============================================================ */
+.gradient-text {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.post-card {
+    transition: var(--transition);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* */
+}
+
+/* Hover effects disabled for touch devices to prevent "sticky" hover states */
+@media (hover: hover) {
+    .post-card:hover {
+        transform: translateY(-5px); /* */
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.featured-post {
+    background: linear-gradient(135deg, var(--primary), #5da3dc); /* */
+    color: white;
+}
+
+/* ============================================================
+   3. LAYOUT & CONTAINERS
+   ============================================================ */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 60px 24px; /* */
+}
+
+.hero-gradient {
+    /* Multi-step gradient for smoother transitions across platforms */
+    background: linear-gradient(-45deg, var(--primary), #5da3dc, var(--secondary));
+    background-size: 400% 400%;
+    animation: gradientMove 10s ease infinite; /* */
+    color: white;
+    text-align: center;
+    padding: clamp(3rem, 10vw, 6rem) 1rem;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ============================================================
+   4. MODALS (Share Functionality)
+   ============================================================ */
+#share-modal {
+    display: flex; /* */
+    backdrop-filter: blur(4px); /* Modern blur effect for Mac/iOS/Android */
+    -webkit-backdrop-filter: blur(4px);
+}
+
+#share-modal.hidden {
+    display: none; /* */
+}
+
+/* ============================================================
+   5. FORMS & INTERACTION (Mobile Friendly)
+   ============================================================ */
+input,
+textarea,
+select {
+    font-family: inherit;
+    font-size: 16px; /* Essential: Prevents auto-zoom on iOS Safari */
+}
+
+button {
+    cursor: pointer;
+    transition: var(--transition);
+    touch-action: manipulation; /* Optimizes for touch taps */
+}
+
+button:active {
+    transform: scale(0.96); /* Tactile feedback for mobile */
+}
+
+/* ============================================================
+   6. RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* Mobile (Phones) */
+@media (max-width: 768px) {
+    .container {
+        padding: 40px 16px; /* */
+    }
+
+    /* Ensure navigation links have large enough tap targets */
+    nav a {
+        padding: 12px 8px;
+        display: block;
+    }
+
+    .hero-gradient h1 {
+        font-size: 1.85rem; /* */
+    }
+}
+
+/* Tablets & Small Laptops */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding: 50px 20px; /* */
+    }
+}
+
+/* Utilities */
+.min-h-screen {
+    min-height: 100vh;
+    min-height: 100svh; /* Small Viewport Height: Corrects mobile browser UI shifts */
+}
+
+/* Performance & Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* ============================================================
+   7. ADVANCED CROSS-PLATFORM & DEVICE OPTIMIZATION
+   ============================================================ */
+
+:root {
+    /* Fluid Typography: Scales smoothly between 16px and 18px based on screen width */
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+}
+
+body {
+    /* Prevents horizontal scroll issues on mobile and handles long words */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    
+    /* Improves scrolling momentum on older iOS devices */
+    -webkit-overflow-scrolling: touch;
+
+    /* Professional text rendering across engines */
+    text-rendering: optimizeLegibility;
+}
+
+/* Scrollbar Styling for Windows/Linux/Android (Chrome/Edge/Samsung) 
+   MacOS/iOS use "floating" scrollbars by default; this makes Windows feel modern. */
+@media (min-width: 1024px) {
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 10px;
+        border: 2px solid #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--dark);
+    }
+}
+
+/* High-Density Display (Retina/OLED) Adjustments */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    body {
+        font-weight: 400; /* System fonts can look too thin on high-res displays */
+    }
+}
+
+/* Accessibility: Support for Dark Mode at the system level */
+@media (prefers-color-scheme: dark) {
+    /* Optional: Uncomment if you want a basic dark theme for system-level dark mode users */
+    /*
+    body { background-color: #121212; color: #f5f5f5; }
+    .post-card { background-color: #1e1e1e; border: 1px solid #333; }
+    nav { background-color: #1a1a1a !important; }
+    */
+}
+
+/* Landscape Orientation Fix for Mobile */
+@media screen and (max-height: 450px) and (orientation: landscape) {
+    .hero-gradient {
+        padding: 2rem 1rem;
+    }
+    .container {
+        padding-top: 20px;
+    }
+}
+
+/* ============================================================
+   8. UNIFIED ARTICLE & TYPOGRAPHY SYSTEM
+   Ensures ALL entry pages look identical
+============================================================ */
+
+.article-text {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: #4b5563; /* Tailwind gray-600 equivalent */
+    text-align: justify;
+}
+
+.article-text p {
+    margin-bottom: 1.5rem;
+}
+
+.article-text strong,
+.article-text b {
+    font-weight: 700;
+}
+
+.article-text h1,
+.article-text h2,
+.article-text h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.read-more-link {
+    transition: var(--transition);
+}
+
+.read-more-link:hover {
+    opacity: 0.8;
+}
+
+/* Smooth button feel across devices */
+.like-button,
+.share-button {
+    font-weight: 500;
+}
+
+/* Consistent image styling inside posts */
+.post-card img {
+    object-fit: cover;
+}
+
+/* Back button styling consistency */
+button[onclick*="history.back"] {
+    font-weight: 500;
+}
+
+
+
+/* ============================================================
+   9. SITE HERO BANNER (home + interior pages)
+   ============================================================ */
+.site-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--primary);
+    border-top: 3px solid var(--accent);
+    color: #fff;
+    padding: clamp(2.5rem, 7vw, 4.5rem) clamp(1.5rem, 5vw, 3rem);
+}
+.site-hero .hero-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, .11) 1.3px, transparent 1.3px);
+    background-size: 20px 20px;
+    z-index: 1;
+}
+.site-hero .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+}
+.site-hero .hero-copy { flex: 1; min-width: 0; }
+.site-hero h1 {
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    font-weight: 700;
+    margin: 0 0 1rem;
+}
+.site-hero .hero-tagline {
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    color: var(--secondary);
+    line-height: 1.6;
+    margin: 0 0 1.75rem;
+    max-width: 34rem;
+}
+.site-hero .hero-chips { display: flex; gap: 1rem; flex-wrap: wrap; }
+.site-hero .hero-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: transform .2s ease, opacity .2s ease;
+}
+.site-hero .hero-chip:hover { transform: translateY(-2px); opacity: .85; }
+.site-hero .hero-chip .chip-ic {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+.site-hero .hero-figure { position: relative; flex-shrink: 0; width: 210px; height: 190px; }
+.site-hero .hero-figure svg { display: block; }
+.site-hero .hero-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    text-decoration: none;
+    transition: transform .2s ease;
+}
+.site-hero .hero-node:hover { transform: translate(-50%, -50%) scale(1.15); }
+.site-hero .node-dot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(181, 210, 230, .6);
+    color: #fff;
+    font-size: 1.4rem;
+    line-height: 1;
+    animation: nodeTwinkle 3.2s ease-in-out infinite;
+}
+.site-hero .hero-node:hover .node-dot { color: var(--secondary); }
+@keyframes nodeTwinkle {
+    0%, 100% { transform: scale(1); opacity: .9; }
+    50% { transform: scale(1.1); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .site-hero .hero-figure { display: none; }
+    .site-hero .hero-inner { gap: 0; }
+}
+
+
+/* ============================================================
+   10. SITE FOOTER BANNER (mirrors the hero)
+   ============================================================ */
+.site-footer {
+    position: relative;
+    overflow: hidden;
+    background: var(--primary);
+    border-top: 3px solid var(--accent);
+    color: #fff;
+    padding: clamp(2.5rem, 6vw, 3.5rem) clamp(1.5rem, 5vw, 3rem);
+}
+.site-footer .footer-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, .11) 1.3px, transparent 1.3px);
+    background-size: 20px 20px;
+    z-index: 1;
+}
+.site-footer .footer-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+}
+.site-footer h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0 0 .5rem;
+    color: #fff;
+}
+.site-footer .footer-tagline {
+    color: var(--secondary);
+    font-size: .95rem;
+    line-height: 1.6;
+    max-width: 30rem;
+    margin: 0 auto 1.5rem;
+}
+.site-footer .footer-subscribe {
+    display: flex;
+    gap: .5rem;
+    justify-content: center;
+    max-width: 380px;
+    margin: 0 auto 1.5rem;
+    flex-wrap: wrap;
+}
+.site-footer .footer-subscribe input {
+    flex: 1;
+    min-width: 180px;
+    padding: .6rem .9rem;
+    border-radius: 8px;
+    border: none;
+    font-size: .95rem;
+    color: var(--primary);
+}
+.site-footer .footer-subscribe button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: .6rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: .95rem;
+    white-space: nowrap;
+}
+.site-footer .footer-subscribe button:hover { opacity: .9; }
+.site-footer .footer-subscribe button[disabled] { opacity: .6; cursor: default; }
+.site-footer .footer-subscribe-status {
+    min-height: 1.2em;
+    margin: -1rem auto 1.5rem;
+    font-size: .9rem;
+    text-align: center;
+}
+.site-footer .footer-subscribe-status:empty { margin: 0; min-height: 0; }
+.site-footer .footer-links {
+    display: flex;
+    gap: 1.25rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: .95rem;
+    margin-bottom: 1.5rem;
+}
+.site-footer .footer-links a {
+    color: #fff;
+    text-decoration: none;
+    transition: color .2s ease;
+}
+.site-footer .footer-links a:hover { color: var(--secondary); }
+.site-footer .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, .22);
+    padding-top: 1.1rem;
+    font-size: .85rem;
+    color: rgba(255, 255, 255, .8);
+}
+
+
+/* ============================================================
+   11. "AND YET WE GO" THEME  (wordmark, slate banners, warm
+       paper ground, brand-mapped accents, editorial type)
+   ============================================================ */
+
+/* --- warm paper page background; cards stay white and lift off it --- */
+body { background-color: #FAF7F1; }
+
+/* --- darker slate ground for hero + footer (lets the sky-blue pivot pop) --- */
+:root { --slate: #28323d; }
+.site-hero,
+.site-footer { background: var(--slate); }
+.site-hero .hero-dots,
+.site-footer .footer-dots {
+    background-image: radial-gradient(rgba(255, 255, 255, .07) 1.3px, transparent 1.3px);
+}
+
+/* --- map Tailwind's default indigo onto the brand palette ---
+       (Play CDN injects after this file, so !important is required) --- */
+.text-indigo-600 { color: var(--primary) !important; }
+.text-indigo-400 { color: var(--primary-light) !important; }
+.bg-indigo-600   { background-color: var(--primary) !important; }
+.bg-indigo-400   { background-color: var(--primary-light) !important; }
+.bg-indigo-300   { background-color: var(--secondary) !important; }
+.bg-indigo-100   { background-color: rgba(50, 96, 128, .10) !important; }
+.hover\:bg-indigo-700:hover   { background-color: #284e66 !important; }
+.hover\:text-indigo-600:hover { color: var(--primary) !important; }
+.focus\:ring-indigo-500:focus { --tw-ring-color: rgba(50, 96, 128, .45) !important; }
+
+/* --- editorial type: section headings + card/entry titles echo the wordmark --- */
+main h2       { font-family: "Fraunces", Georgia, "Times New Roman", serif; letter-spacing: -.01em; color: #28323d; }
+.post-card h3 { font-family: "Fraunces", Georgia, "Times New Roman", serif; font-weight: 600; letter-spacing: -.01em; }
+
+/* --- the wordmark itself --- */
+.wordmark { font-family: "Fraunces", Georgia, "Times New Roman", serif; font-weight: 400; }
+.wordmark .pivot { font-style: italic; }
+.site-hero h1.wordmark { font-size: clamp(2.3rem, 5vw, 3.4rem); letter-spacing: -.01em; }
+.site-hero .wordmark .pivot,
+.site-footer .wordmark .pivot { color: var(--primary-light); }
+.site-hero .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--secondary); margin: 0 0 .6rem; }
+
+/* nav wordmark — on white, a deeper blue keeps the pivot legible */
+.wordmark-nav { font-family: "Fraunces", Georgia, serif; font-weight: 500; font-size: 1.3rem; color: #28323d; letter-spacing: -.01em; text-decoration: none; }
+.wordmark-nav .pivot { font-style: italic; color: var(--primary); }
+
+/* --- topic badges color-coded to the three pillars --- */
+.badge { display: inline-block; font-size: .72rem; font-weight: 600; padding: .25rem .8rem; border-radius: 999px; letter-spacing: .02em; }
+.badge-thoughts  { background: rgba(93, 163, 220, .16); color: #2f6f9e; }
+.badge-creations { background: rgba(50, 96, 128, .12);  color: var(--primary); }
+.badge-reviews   { background: rgba(128, 82, 50, .14);  color: var(--accent); }
+
+/* --- hero CTA button (replaces the three chips) --- */
+.site-hero .hero-cta {
+    display: inline-flex; align-items: center; gap: .55rem;
+    font-size: .78rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+    color: #fff; text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, .45);
+    padding: .85rem 1.6rem; border-radius: 4px;
+    transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.site-hero .hero-cta i { font-size: .72rem; transition: transform .2s ease; }
+.site-hero .hero-cta:hover { background: var(--primary-light); border-color: var(--primary-light); color: var(--slate); }
+.site-hero .hero-cta:hover i { transform: translateX(3px); }
+
+/* --- constellation node hover labels --- */
+.site-hero .node-label {
+    position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+    white-space: nowrap; font-size: .72rem; font-weight: 600; letter-spacing: .05em;
+    color: #fff; background: rgba(40, 50, 61, .92); padding: .22rem .6rem; border-radius: 5px;
+    opacity: 0; pointer-events: none; transition: opacity .2s ease;
+}
+.site-hero .hero-node:hover .node-label { opacity: 1; }
+
+/* --- legible metadata tag (replaces faint sky-blue #history text) --- */
+.entry-tag { color: #3a86c0; font-weight: 500; }
+
+/* --- featured post: brown left rule so the eye lands here first (card stays white, matching every other card and the entry pages) --- */
+.featured-card {
+    border-left: 4px solid var(--accent);
+}
+
+/* --- entry pages: horizontal breathing room for the text column (the image sits outside .p-2, so it stays full-bleed) --- */
+.post-card .p-2 { padding-left: 1.75rem; padding-right: 1.75rem; }
+@media (max-width: 640px) {
+    .post-card .p-2 { padding-left: 1.1rem; padding-right: 1.1rem; }
+}
+
+
+/* ============================================================
+   12. BRANDED IMAGE PLACEHOLDER  (entries / cards with no photo)
+   A topic-tinted "glyph tile": dot-grid ground (echoing the hero,
+   footer, and topic cards), the pillar's icon in a soft chip, and
+   a ruled label. Pure CSS — no image files, works on file://, and
+   scales from a small thumbnail to a full-bleed entry header.
+   ============================================================ */
+.thumb-placeholder {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .8rem;
+    overflow: hidden;
+    background-color: var(--ph-bg, #eef2f6);
+    /* same 1.3px dot motif used across the site, sized for a card */
+    background-image: radial-gradient(var(--ph-dot, rgba(50, 96, 128, .18)) 1.3px, transparent 1.3px);
+    background-size: 15px 15px;
+}
+/* soft center glow so the icon always reads against the texture */
+.thumb-placeholder::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 44%, var(--ph-glow, rgba(255, 255, 255, .6)) 0%, transparent 60%);
+}
+.thumb-placeholder .ph-icon {
+    position: relative;
+    width: clamp(42px, 24%, 66px);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--ph-chip, rgba(255, 255, 255, .78));
+    color: var(--ph-fg, #326080);
+    font-size: clamp(1rem, 3.4vw, 1.6rem);
+    line-height: 1;
+    box-shadow: 0 1px 3px rgba(40, 50, 61, .12);
+}
+.thumb-placeholder .ph-label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--ph-fg, #326080);
+}
+.thumb-placeholder .ph-label::before,
+.thumb-placeholder .ph-label::after {
+    content: "";
+    width: 18px;
+    height: 1px;
+    background: currentColor;
+    opacity: .4;
+}
+
+/* per-pillar palettes (mapped to the three brand accents) */
+.ph-thoughts  { --ph-fg: #2f6f9e; --ph-dot: rgba(93, 163, 220, .22); --ph-bg: #edf4fb; --ph-chip: rgba(255, 255, 255, .82); --ph-glow: rgba(255, 255, 255, .6);  }
+.ph-creations { --ph-fg: #326080; --ph-dot: rgba(50, 96, 128, .20);  --ph-bg: #eef2f6; --ph-chip: rgba(255, 255, 255, .82); --ph-glow: rgba(255, 255, 255, .55); }
+.ph-reviews   { --ph-fg: #805232; --ph-dot: rgba(128, 82, 50, .20);  --ph-bg: #f7f1ea; --ph-chip: rgba(255, 255, 255, .85); --ph-glow: rgba(255, 247, 240, .6);  }

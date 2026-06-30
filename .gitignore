@@ -1,0 +1,6 @@
+# macOS
+.DS_Store
+
+# Working files — not part of the published site
+backup/
+settings/
