@@ -105,10 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // `supa` is filled in once the library loads; clicks before that
-        // fall back to local-only behaviour (the closure reads it live).
-        let supa = null;
-
         // Tag every button with its id and restore this visitor's own
         // "liked" state immediately — no network needed.
         likeButtons.forEach(button => {
@@ -121,6 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
             button.addEventListener('click', async () => {
                 const id = button.dataset.postId;
                 const span = button.querySelector('.like-count');
+                // Mark this button as user-touched so the initial count load
+                // below can't clobber it with a stale server value mid-flight.
+                button.dataset.userActed = '1';
                 const wasLiked = localStorage.getItem(likedKey(id)) === 'true';
                 const delta = wasLiked ? -1 : 1;
 
@@ -130,9 +129,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 paintLiked(button, !wasLiked);
                 localStorage.setItem(likedKey(id), String(!wasLiked));
 
-                if (!supa) return; // not configured/loaded -> local-only
+                // Wait for the Supabase client before giving up. Previously a
+                // click made before the CDN library finished loading returned
+                // here as "local-only" and was never saved — so a like made on
+                // the home page never showed up on the entry page. Awaiting the
+                // shared promise means even an early click persists.
+                const client = await clientReady;
+                if (!client) return; // not configured / library failed -> local-only
 
-                const { data, error } = await supa.rpc('bump_likes', {
+                const { data, error } = await client.rpc('bump_likes', {
                     pid: id,
                     delta
                 });
@@ -149,12 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Load the Supabase library on demand, then fetch live counts.
-        (async () => {
+        // Load the Supabase library on demand ONCE, shared by clicks and the
+        // initial count fetch. Resolves to the client, or null if the backend
+        // isn't configured or the library can't load (buttons stay local-only).
+        const clientReady = (async () => {
             const configured =
                 SUPABASE_URL.startsWith('https://') &&
                 !SUPABASE_URL.includes('YOUR-PROJECT');
-            if (!configured) return;
+            if (!configured) return null;
 
             if (!window.supabase) {
                 await new Promise((resolve) => {
@@ -167,13 +174,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (!window.supabase) {
                 console.error('Could not load the Supabase library.');
-                return;
+                return null;
             }
+            return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        })();
 
-            supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Once the client is ready, fetch live counts for this page's buttons.
+        clientReady.then(async (client) => {
+            if (!client) return;
 
             const ids = [...likeButtons].map(b => b.dataset.postId);
-            const { data, error } = await supa
+            const { data, error } = await client
                 .from('likes')
                 .select('post_id, count')
                 .in('post_id', ids);
@@ -184,11 +195,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const counts = Object.fromEntries(data.map(r => [r.post_id, r.count]));
             likeButtons.forEach(button => {
+                // Don't overwrite a button the visitor just clicked; its own
+                // RPC response is the authoritative value.
+                if (button.dataset.userActed) return;
                 const span = button.querySelector('.like-count');
                 const id = button.dataset.postId;
                 if (id in counts) span.textContent = counts[id];
             });
-        })();
+        });
     }
 
     /* =========================================================
