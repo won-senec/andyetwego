@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>and yet we go | Services</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style_for_all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="home.html" class="wordmark-nav">and <span class="pivot">yet</span> we go</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="home.html" class="text-gray-700 hover:text-indigo-600 transition">Home</a>
+                    <a href="entries_all.html" class="text-gray-700 hover:text-indigo-600 transition">Entries</a>
+                    <a href="#topics" class="text-gray-700 hover:text-indigo-600 transition">Topics</a>
+                    <a href="services.html" class="text-indigo-600 font-medium transition">Services</a>
+                    <a href="about.html" class="text-gray-700 hover:text-indigo-600 transition">About</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-indigo-600 transition">Contact</a>
+                </div>
+
+                <div class="flex items-center md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white py-2 px-4 shadow-lg">
+            <a href="home.html" class="block py-2 text-gray-700 hover:text-indigo-600 transition">Home</a>
+            <a href="entries_all.html" class="block py-2 text-gray-700 hover:text-indigo-600 transition">Entries</a>
+            <a href="#topics" class="block py-2 text-gray-700 hover:text-indigo-600 transition">Topics</a>
+            <a href="services.html" class="block py-2 text-indigo-600 font-medium transition">Services</a>
+            <a href="about.html" class="block py-2 text-gray-700 hover:text-indigo-600 transition">About</a>
+            <a href="contact.html" class="block py-2 text-gray-700 hover:text-indigo-600 transition">Contact</a>
+        </div>
+    </nav>
+
+
+    <!-- Main -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+        <!-- Back Button -->
+        <div class="mb-12">
+            <button onclick="window.history.back()"
+                class="flex items-center text-gray-500 hover:text-indigo-600 transition font-medium group">
+                <i class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-1 transition-transform"></i>
+                Go back to previous page
+            </button>
+        </div>
+
+        <!-- Services Section -->
+        <section class="max-w-3xl mx-auto">
+
+            <div class="post-card bg-white p-10 sm:p-14 rounded-xl border border-gray-100 animate-fade-in text-center">
+
+                <!-- Under-construction illustration -->
+                <img src="images/under-construction.svg"
+                     alt="Under construction illustration"
+                     class="w-64 max-w-full mx-auto mb-10">
+
+                <p class="text-sm font-semibold uppercase tracking-wide mb-3" style="color: var(--accent);">Services</p>
+                <h1 class="text-3xl sm:text-4xl font-bold mb-5 text-gray-900">Under construction</h1>
+
+                <p class="text-gray-600 leading-relaxed max-w-xl mx-auto mb-8">
+                    I&rsquo;m still shaping what I&rsquo;d like to offer here. This page is being built
+                    and will be updated soon &mdash; thank you for your patience while I get it right.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="#subscribe"
+                       class="inline-flex items-center justify-center px-6 py-3 rounded-lg text-white font-medium transition"
+                       style="background: var(--accent);">
+                        <i class="fas fa-envelope mr-2"></i> Get notified when it&rsquo;s ready
+                    </a>
+                    <a href="contact.html"
+                       class="inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium border border-gray-200 text-gray-700 hover:text-indigo-600 hover:border-indigo-200 transition">
+                        <i class="fas fa-paper-plane mr-2"></i> Reach out in the meantime
+                    </a>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-dots"></div>
+        <div class="footer-inner">
+            <h3 class="wordmark">and <span class="pivot">yet</span> we go</h3>
+            <p class="footer-tagline">
+                Once every two weeks, I reflect on something worth sharing.
+        <br>
+                One thought. One creation. One review.
+            </br>
+            </p>
+            <p class="footer-tagline">
+                First and third Tuesdays. Free.
+            </p>
+            <form id="subscribe" class="footer-subscribe scroll-mt-24"
+                  action="https://buttondown.com/api/emails/embed-subscribe/andyetwego"
+                  method="post">
+                <input type="email" name="email" placeholder="your email" aria-label="Email address" required>
+                <button type="submit">Subscribe</button>
+                <p class="footer-tagline">Unsubscribe at any time. </p>
+            </form>
+            <p class="footer-subscribe-status" role="status" aria-live="polite"></p>
+            <div class="footer-links">
+                <a href="entries_thoughts.html">Thoughts</a>
+                <a href="entries_creations.html">Creations</a>
+                <a href="entries_films.html">Reviews</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-bottom">&copy; 2026 Won Kyun Koh. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
