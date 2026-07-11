@@ -549,6 +549,8 @@ main h2       { font-family: "Fraunces", Georgia, "Times New Roman", serif; lett
 /* --- the wordmark itself --- */
 .wordmark { font-family: "Fraunces", Georgia, "Times New Roman", serif; font-weight: 400; }
 .wordmark .pivot { font-style: italic; }
+/* footer wordmark links to the top of the current page while keeping its styling */
+.footer-home-link { color: inherit; text-decoration: none; cursor: pointer; }
 .site-hero h1.wordmark { font-size: clamp(2.3rem, 5vw, 3.4rem); letter-spacing: -.01em; }
 .site-hero .wordmark .pivot,
 .site-footer .wordmark .pivot { color: var(--primary-light); }
