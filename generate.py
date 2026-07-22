@@ -64,6 +64,8 @@ TITLE_RE   = _marker(r'Title',      r'.*?<h[1-3][^>]*>\s*([^<]+?)\s*</h[1-3]>')
 LIKES_RE   = _marker(r'Likes\s*#?', r'.*?<span\s+class="like-count">\s*([^<]+?)\s*</span>')
 # Tagline value lives *inside* the comment:  <!--*** Tagline: ... -->
 TAGLINE_RE = re.compile(r'<!--\s*\*\*\*\s*Tagline:\s*(.*?)\s*-->', re.IGNORECASE | re.DOTALL)
+# Bare flag marker:  <!--*** New -->  anywhere in the entry marks it as new.
+NEW_RE     = re.compile(r'<!--\s*\*\*\*\s*New\s*-->', re.IGNORECASE)
 
 
 def extract(entry_path: Path) -> dict:
@@ -93,7 +95,13 @@ def extract(entry_path: Path) -> dict:
         "tagline":     tagline,
         "likes":       first(LIKES_RE, 1) or "0",
         "href":        entry_path.name,
+        "new":         bool(NEW_RE.search(text)),
     }
+
+
+def _new_badge(d: dict) -> str:
+    """Optional 'New' pill, shown when the entry carries a <!--*** New --> marker."""
+    return ' <span class="badge badge-new ml-2">New</span>' if d.get("new") else ""
 
 
 # ----------------------------------------------------------------------
@@ -135,7 +143,7 @@ def thumbnail_card(d: dict, indent: str) -> str:
     {image}
     <div class="p-6">
         <div class="flex items-center mb-4">
-            <span class="{_esc(d["badge_class"])}">{_esc(d["topic"])}</span>
+            <span class="{_esc(d["badge_class"])}">{_esc(d["topic"])}</span>{_new_badge(d)}
             <span class="text-gray-400 text-sm ml-4">{_esc(d["date"])}</span>
         </div>
         <h3 class="text-lg font-bold mb-3 text-gray-900">{_esc(d["title"])}</h3>
@@ -164,7 +172,7 @@ def featured_card(d: dict, indent: str) -> str:
     <div class="flex flex-col md:flex-row">
         <div class="md:w-1/2 p-8 flex flex-col justify-center">
             <div class="flex items-center mb-4">
-                <span class="{_esc(d["badge_class"])}">{_esc(d["topic"])}</span>
+                <span class="{_esc(d["badge_class"])}">{_esc(d["topic"])}</span>{_new_badge(d)}
                 <span class="text-gray-400 text-sm ml-4">{_esc(d["date"])}</span>
             </div>
             <h3 class="text-2xl font-bold mb-4 text-gray-900">{_esc(d["title"])}</h3>
