@@ -118,6 +118,24 @@ PILLAR = {
     "badge-reviews":   ("ph-reviews",   "fa-film",      "Reviews"),
 }
 
+# badge class -> topic listing page the badge links to
+TOPIC_PAGE = {
+    "badge-thoughts":  "entries_thoughts.html",
+    "badge-creations": "entries_creations.html",
+    "badge-reviews":   "entries_films.html",
+}
+
+
+def _topic_badge(d: dict) -> str:
+    """Render the topic badge as a link to its listing page, falling back to a
+    plain span if the badge class has no known topic page."""
+    badge_class = d["badge_class"]
+    label = _esc(d["topic"])
+    for key, page in TOPIC_PAGE.items():
+        if key in badge_class:
+            return f'<a href="{page}" class="{_esc(badge_class)}">{label}</a>'
+    return f'<span class="{_esc(badge_class)}">{label}</span>'
+
 
 def _image_block(d: dict, img_classes: str, placeholder_classes: str) -> str:
     """Return an <img> when the entry has an image, else a branded,
@@ -143,7 +161,7 @@ def thumbnail_card(d: dict, indent: str) -> str:
     {image}
     <div class="p-6">
         <div class="flex items-center mb-4">
-            <span class="{_esc(d["badge_class"])}">{_esc(d["topic"])}</span>{_new_badge(d)}
+            {_topic_badge(d)}{_new_badge(d)}
             <span class="text-gray-400 text-sm ml-4">{_esc(d["date"])}</span>
         </div>
         <h3 class="text-lg font-bold mb-3 text-gray-900">{_esc(d["title"])}</h3>
@@ -172,7 +190,7 @@ def featured_card(d: dict, indent: str) -> str:
     <div class="flex flex-col md:flex-row">
         <div class="md:w-1/2 p-8 flex flex-col justify-center">
             <div class="flex items-center mb-4">
-                <span class="{_esc(d["badge_class"])}">{_esc(d["topic"])}</span>{_new_badge(d)}
+                {_topic_badge(d)}{_new_badge(d)}
                 <span class="text-gray-400 text-sm ml-4">{_esc(d["date"])}</span>
             </div>
             <h3 class="text-2xl font-bold mb-4 text-gray-900">{_esc(d["title"])}</h3>

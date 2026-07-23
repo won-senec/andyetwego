@@ -566,6 +566,8 @@ main h2       { font-family: "Fraunces", Georgia, "Times New Roman", serif; lett
 .badge-creations { background: rgba(50, 96, 128, .12);  color: var(--primary); }
 .badge-reviews   { background: rgba(128, 82, 50, .14);  color: var(--accent); }
 .badge-new       { background: rgba(22, 163, 74, .16);  color: #15803d; }
+a.badge { text-decoration: none; cursor: pointer; transition: filter .15s ease, opacity .15s ease; }
+a.badge:hover { filter: brightness(.96); opacity: .9; }
 
 /* --- hero CTA button (replaces the three chips) --- */
 .site-hero .hero-cta {
