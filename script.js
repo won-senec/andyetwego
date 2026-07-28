@@ -356,4 +356,73 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
+    /* =========================================================
+       7. BACK TO PREVIOUS PAGE
+
+       SYSTEMATIC BY DESIGN — no per-page setup. Every entry ships
+       the same link below the like/share row:
+
+           <a href="home.html" class="back-to-home">Back to previous page</a>
+
+       It behaves like the "Go back to previous page" button at the
+       top of the entry: it steps back through the browser's own
+       history, so it returns to whatever page you actually came from
+       — a topic listing, the home page, another entry — and restores
+       the scroll position you left it at. Deliberately history-based
+       rather than referrer-based: a referrer is empty on file:// pages
+       opened by double-clicking, which would send every local click
+       to home.html.
+
+       The href stays home.html as the fallback for the two cases where
+       there is genuinely nothing to go back to: JavaScript off, or a
+       fresh tab (a shared link, a search result, "open in new tab").
+    ========================================================= */
+    const backLinks = document.querySelectorAll('.back-to-home');
+
+    if (backLinks.length) {
+        // In-page jumps (the "Explore Topics" link, the footer wordmark's
+        // #top) each push a history entry, so a single step back would only
+        // undo the jump and leave us on this entry. Count them and step over
+        // them. Tracked with a depth marker rather than a naive tally so that
+        // pressing the browser's own Back button between jumps can't drift.
+        let depth = 0;
+
+        try {
+            window.history.replaceState({ backDepth: 0 }, '');
+        } catch (err) {
+            /* Some file:// contexts refuse replaceState — the count below
+               still works, we just can't tell a re-entered hash apart. */
+        }
+
+        window.addEventListener('popstate', (e) => {
+            if (e.state && typeof e.state.backDepth === 'number') {
+                depth = e.state.backDepth;
+            }
+        });
+
+        window.addEventListener('hashchange', () => {
+            // A fresh fragment entry arrives with no state of ours; one we've
+            // already been to (via Back/Forward) is already marked.
+            const state = window.history.state;
+            if (state && typeof state.backDepth === 'number') return;
+            depth += 1;
+            try {
+                window.history.replaceState({ backDepth: depth }, '');
+            } catch (err) {
+                /* Non-fatal: worst case we step back one entry too few. */
+            }
+        });
+
+        backLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Let the browser handle new-tab/new-window clicks, and let
+                // a tab with no history behind it fall through to home.html.
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                if (window.history.length <= 1) return;
+
+                e.preventDefault();
+                window.history.go(-(depth + 1));
+            });
+        });
+    }
 });

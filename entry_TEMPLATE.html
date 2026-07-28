@@ -133,7 +133,13 @@ Separate paragraphs with a blank line, like this. -->
                          automatic, nothing to edit here. -->
                 </div>
 
-                <!-- Back to previous page -->
+                <!-- Back to previous page.
+                     script.js makes this step back through browser history,
+                     like the "Go back to previous page" button at the top of
+                     the page, so it returns to wherever the visitor came from.
+                     The home.html below is only the fallback for when there is
+                     nothing to go back to (a fresh tab, JavaScript off), so
+                     leave it as-is — nothing to edit here. -->
                 <div class="mt-6">
                     <a href="home.html" class="back-to-home inline-flex items-center text-gray-500 hover:text-indigo-600 transition font-semibold">
                         <i class="fas fa-arrow-left mr-2"></i> Back to previous page
