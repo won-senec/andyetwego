@@ -347,7 +347,15 @@ STATIC_META = {
 #   entry_TEMPLATE.html — scaffolding, not a real entry
 #   index.html          — redirects to home.html, which is listed instead
 #   services.html       — an "under construction" stub; add it once it has content
-SITEMAP_SKIP = {"entry_TEMPLATE.html", "index.html", "services.html"}
+#   the two withdrawn Thoughts entries — see NOINDEX below
+# Applies to entries and static pages alike.
+SITEMAP_SKIP = {
+    "entry_TEMPLATE.html",
+    "index.html",
+    "services.html",
+    "entry_Thoughts_love.html",
+    "entry_Thoughts_senseofbelonging.html",
+}
 
 # index.html is a redirect stub, so it points at the page it redirects to.
 CANONICAL_OVERRIDE = {"index.html": "home.html"}
@@ -357,7 +365,16 @@ CANONICAL_OVERRIDE = {"index.html": "home.html"}
 # nav on every page, so Google would still crawl and index it, and an "under
 # construction" stub is not what should come up under the site's own name.
 # Drop a page from here and from SITEMAP_SKIP together, once it has content.
-NOINDEX = {"services.html"}
+#
+# The two Thoughts entries are withdrawn: their cards were removed from
+# home.html and the listing pages, so nothing links to them, but the files are
+# still served and a URL once public can be crawled from anywhere. noindex is
+# what actually keeps them out of results. Applies to entries and static pages.
+NOINDEX = {
+    "services.html",
+    "entry_Thoughts_love.html",
+    "entry_Thoughts_senseofbelonging.html",
+}
 
 # Whole-line matches, so a replaced tag doesn't leave a blank line behind.
 TITLE_TAG_RE = re.compile(r'([ \t]*)<title>.*?</title>', re.IGNORECASE | re.DOTALL)
@@ -465,8 +482,13 @@ def seo_pass() -> None:
         title = d["title"]
         description = d["tagline"] or f"{title} — an entry on {BRAND}."
         url = f"{SITE_URL}/{page.name}"
-        if apply_head_meta(page, f"{title} — {BRAND}", description, url):
+        if apply_head_meta(page, f"{title} — {BRAND}", description, url,
+                           noindex=page.name in NOINDEX):
             touched += 1
+        if page.name in SITEMAP_SKIP:
+            # Withdrawn: keep it out of the sitemap, and out of the newest-entry
+            # date that home and the listing pages advertise as their lastmod.
+            continue
         lastmod = iso_date(d["date"])
         if lastmod and (newest is None or lastmod > newest):
             newest = lastmod
