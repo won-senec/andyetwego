@@ -20,12 +20,22 @@ HOW TO USE
 
 3. Edit an entry and run again any time — cards are regenerated in place.
 
+Every run also refreshes the search-engine metadata, regardless of which pages
+were passed on the command line:
+
+  * a unique <title>, <meta name="description"> and absolute <link rel="canonical">
+    in every page's <head> — entry pages read theirs from the <!--*** Title -->
+    and <!--*** Tagline: --> markers, the rest come from STATIC_META below;
+  * sitemap.xml, listing every indexable page;
+  * robots.txt, pointing crawlers at that sitemap.
+
 No server, no dependencies. Works on double-clicked file:// pages.
 """
 
 import re
 import sys
 import html
+from datetime import datetime
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -277,6 +287,198 @@ def process_page(page: Path) -> int:
     return count
 
 
+# ----------------------------------------------------------------------
+# Search-engine metadata: per-page head tags, sitemap.xml, robots.txt
+# ----------------------------------------------------------------------
+SITE_URL = "https://andyetwego.com"     # apex; www and http both 301 here
+BRAND = "and yet we go"
+
+# Pages with no <!--*** --> markers to read from, so their metadata lives here.
+#   filename -> (title, description)
+# Keep descriptions roughly 120-160 characters — Google rewrites ones that are
+# too thin to be useful as a snippet.
+STATIC_META = {
+    "index.html": (
+        f"{BRAND} — essays and film writing by Won Kyun Koh",
+        "The world doesn’t pause for us, and what’s broken doesn’t mend on its own. "
+        "And yet we go — one thought, one thing made, one story at a time.",
+    ),
+    "home.html": (
+        f"{BRAND} — essays and film writing by Won Kyun Koh",
+        "The world doesn’t pause for us, and what’s broken doesn’t mend on its own. "
+        "And yet we go — one thought, one thing made, one story at a time.",
+    ),
+    "entries_all.html": (
+        f"All entries — {BRAND}",
+        "Every entry in one place: thoughts on living and working, things made, "
+        "and writing about the films and shows worth sitting with.",
+    ),
+    "entries_thoughts.html": (
+        f"Thoughts — {BRAND}",
+        "Essays on parenting, work, money, AI, war, and belonging — the turn from "
+        "what went wrong to what comes next.",
+    ),
+    "entries_films.html": (
+        f"Reviews — {BRAND}",
+        "Writing about films and shows: what they are really about underneath the "
+        "plot, and why the good ones stay with you long after the credits.",
+    ),
+    "entries_creations.html": (
+        f"Creations — {BRAND}",
+        "Things made — projects, experiments, and work in progress from Won Kyun Koh.",
+    ),
+    "about.html": (
+        f"About Won Kyun Koh — {BRAND}",
+        "Molecular cell biology scientist, writer, and parent. “And yet” is the pivot "
+        "from what went wrong to what comes next — this site is named after it.",
+    ),
+    "services.html": (
+        f"Services — {BRAND}",
+        "Services from Won Kyun Koh — currently under construction.",
+    ),
+    "contact.html": (
+        f"Contact — {BRAND}",
+        "Say hello. The world doesn’t pause for any of us — and yet we go, and the "
+        "going is better in good company than alone.",
+    ),
+}
+
+# Committed and publicly reachable, but deliberately kept out of sitemap.xml:
+#   entry_TEMPLATE.html — scaffolding, not a real entry
+#   index.html          — redirects to home.html, which is listed instead
+#   services.html       — an "under construction" stub; add it once it has content
+SITEMAP_SKIP = {"entry_TEMPLATE.html", "index.html", "services.html"}
+
+# index.html is a redirect stub, so it points at the page it redirects to.
+CANONICAL_OVERRIDE = {"index.html": "home.html"}
+
+# Whole-line matches, so a replaced tag doesn't leave a blank line behind.
+TITLE_TAG_RE = re.compile(r'([ \t]*)<title>.*?</title>', re.IGNORECASE | re.DOTALL)
+DESC_TAG_RE  = re.compile(r'[ \t]*<meta\s+name=["\']description["\'][^>]*>[ \t]*\n?',
+                          re.IGNORECASE)
+CANON_TAG_RE = re.compile(r'[ \t]*<link\s+rel=["\']canonical["\'][^>]*>[ \t]*\n?',
+                          re.IGNORECASE)
+
+# "June 24th, 2026" -> "June 24, 2026"
+ORDINAL_RE = re.compile(r'\b(\d{1,2})(st|nd|rd|th)\b', re.IGNORECASE)
+
+
+def iso_date(raw: str):
+    """Entry date -> 'YYYY-MM-DD' for <lastmod>, or None if it won't parse."""
+    cleaned = ORDINAL_RE.sub(r'\1', raw or "").strip()
+    for fmt in ("%B %d, %Y", "%b %d, %Y"):
+        try:
+            return datetime.strptime(cleaned, fmt).date().isoformat()
+        except ValueError:
+            continue
+    return None
+
+
+def apply_head_meta(page: Path, title: str, description: str, canonical: str) -> bool:
+    """Rewrite the page's <title> and re-emit its description/canonical directly
+    beneath it. Idempotent: old tags are stripped first, so re-runs replace
+    rather than accumulate."""
+    text = page.read_text(encoding="utf-8")
+    original = text
+
+    m = TITLE_TAG_RE.search(text)
+    if not m:
+        print(f"  ! {page.name}: no <title> in <head> — metadata skipped")
+        return False
+
+    indent = m.group(1)
+    text = text[:m.start()] + "\x00" + text[m.end():]   # placeholder, so removing
+    text = DESC_TAG_RE.sub("", text)                    # the old description and
+    text = CANON_TAG_RE.sub("", text)                   # canonical can't disturb it
+    text = text.replace(
+        "\x00",
+        f'{indent}<title>{_esc(title)}</title>\n'
+        f'{indent}<meta name="description" content="{_esc(description)}">\n'
+        f'{indent}<link rel="canonical" href="{_esc(canonical)}">',
+        1,
+    )
+
+    if text == original:
+        return False
+    page.write_text(text, encoding="utf-8")
+    return True
+
+
+def write_sitemap(urls) -> None:
+    """urls: sequence of (absolute_url, lastmod_or_None), in the order to emit."""
+    lines = ['<?xml version="1.0" encoding="UTF-8"?>',
+             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for loc, lastmod in urls:
+        lines.append('  <url>')
+        lines.append(f'    <loc>{loc}</loc>')
+        if lastmod:
+            lines.append(f'    <lastmod>{lastmod}</lastmod>')
+        lines.append('  </url>')
+    lines.append('</urlset>')
+    (HERE / "sitemap.xml").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def write_robots() -> None:
+    (HERE / "robots.txt").write_text(
+        "User-agent: *\n"
+        "Allow: /\n"
+        "\n"
+        "# Scaffolding for new entries, not real content.\n"
+        "Disallow: /entry_TEMPLATE.html\n"
+        "\n"
+        f"Sitemap: {SITE_URL}/sitemap.xml\n",
+        encoding="utf-8",
+    )
+
+
+def seo_pass() -> None:
+    """Refresh head metadata on every page, then rewrite sitemap.xml/robots.txt."""
+    entry_urls = []
+    newest = None
+    touched = 0
+
+    for page in sorted(HERE.glob("entry_*.html")):
+        if page.name == "entry_TEMPLATE.html":
+            continue
+        d = extract(page)
+        if not d["title"]:
+            # No <!--*** Title --> marker to read, so any title we invent would
+            # be a duplicate of the brand. Leave the page alone and say so
+            # rather than shipping a meaningless one to Google.
+            print(f"  ! {page.name}: no <!--*** Title --> marker — "
+                  f"no metadata written, left out of sitemap.xml")
+            continue
+        title = d["title"]
+        description = d["tagline"] or f"{title} — an entry on {BRAND}."
+        url = f"{SITE_URL}/{page.name}"
+        if apply_head_meta(page, f"{title} — {BRAND}", description, url):
+            touched += 1
+        lastmod = iso_date(d["date"])
+        if lastmod and (newest is None or lastmod > newest):
+            newest = lastmod
+        entry_urls.append((url, lastmod))
+
+    static_urls = []
+    for name, (title, description) in STATIC_META.items():
+        page = HERE / name
+        if not page.exists():
+            continue
+        target = CANONICAL_OVERRIDE.get(name, name)
+        url = f"{SITE_URL}/{target}"
+        if apply_head_meta(page, title, description, url):
+            touched += 1
+        if name not in SITEMAP_SKIP:
+            # Home and the listing pages change whenever an entry lands; the
+            # standing pages have no meaningful date to claim.
+            static_urls.append((url, newest if name in DEFAULT_PAGES else None))
+
+    write_sitemap(static_urls + entry_urls)
+    write_robots()
+    print(f"  + head metadata: {touched} page(s) updated")
+    print(f"  + sitemap.xml: {len(static_urls) + len(entry_urls)} URL(s)")
+    print("  + robots.txt")
+
+
 def main(argv):
     pages = argv[1:] if len(argv) > 1 else DEFAULT_PAGES
     total = 0
@@ -285,6 +487,7 @@ def main(argv):
         if not page.exists():
             continue
         total += process_page(page)
+    seo_pass()
     print(f"Done. {total} card(s) generated.")
 
 

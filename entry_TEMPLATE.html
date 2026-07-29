@@ -7,9 +7,14 @@
          e.g. entry_Films_Dune.html  or  entry_1_2.html
          (the FILENAME is the post's permanent id for likes — keep it
           unique and DON'T rename it later, or its likes will reset.)
-      2. Fill in every  <!-- FILL: ... -->  spot below.
-      3. On home.html, add a card whose "Read More" link points to this
-         exact filename. That card and this page then share one like count.
+      2. Fill in every  FILL:  spot below. Each one sits beside a marker
+         comment starting with three asterisks. generate.py reads those
+         markers, so leave them exactly as they are.
+      3. On home.html, add a thumbnail placeholder pointing at this
+         filename, then run:   python3 generate.py
+         That builds the card and, from the Title and Tagline markers
+         below, also writes this page's title, meta description,
+         canonical URL and its entry in sitemap.xml.
       Likes/share need NO other setup — script.js handles everything,
       and the like row is created automatically on the first like.
       =====================================================================  -->
@@ -17,7 +22,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Won Kyun Koh | <!-- FILL: post title --></title>
+    <!-- Nothing to edit here: generate.py replaces this title and adds the
+         meta description and canonical URL beneath it, reading both from the
+         Title and Tagline markers further down. -->
+    <title>and yet we go</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -89,27 +97,37 @@
         </div>
 
         <article class="post-card bg-white rounded-lg overflow-hidden animate-fade-in mb-19">
-            <!-- Cover image -->
+            <!--*** Image Link-->
             <img src="<!-- FILL: image URL -->" alt="<!-- FILL: short alt text -->" class="w-full h-64 object-cover">
 
             <div class="p-2">
                 <div class="flex items-center mb-2">
-                    <!-- Image citation -->
                     <span class="text-gray-400 text-xs font-bold px-3 py-1 rounded-full">Image credit:<br>
+                    <!--*** Image citation -->
                         <span class="text-gray-600 text-xs mb-6"><!-- FILL: image credit / citation --></span>
                     </span>
                     <div class="flex items-center mb-2"></div>
                     <br>
-                    <!-- Topic tag (e.g. Films / Thoughts / Creations) -->
-                    <span class="bg-indigo-100 text-indigo-600 text-xs font-semibold px-3 py-1 rounded-full"><!-- FILL: topic --></span>
-                    <!-- Date -->
+                    <!--*** Topic -->
+                    <!-- Keep the "badge" class and pick the pillar it belongs to:
+                         badge-thoughts / badge-creations / badge-reviews.
+                         That class also colours the card and links it to the
+                         matching listing page, so it has to be one of the three. -->
+                    <span class="badge badge-thoughts"><!-- FILL: topic, e.g. Thoughts --></span>
+                    <!--*** Date -->
                     <span class="text-gray-400 text-sm ml-4"><!-- FILL: date, e.g. June 8th, 2026 --></span>
                 </div>
 
-                <!-- Title -->
+                <!--*** Title -->
                 <h2 class="text-3xl font-bold mb-4 text-gray-900"><!-- FILL: post title --></h2>
 
-                <!-- Body: write normally; blank lines become paragraphs automatically -->
+                <!-- The tagline is the text INSIDE the marker below, on one line.
+                     It becomes the card blurb and this page's Google description,
+                     so aim for a full sentence of roughly 120-160 characters. -->
+                <!--*** Tagline: FILL: one-line summary of this entry -->
+
+                <!--*** Body -->
+                <!-- Write normally; blank lines become paragraphs automatically. -->
                 <div class="article-text text-gray-600 mb-6 leading-relaxed" id="entry-text">
 <!-- FILL: your article text here.
 
@@ -122,19 +140,21 @@ Separate paragraphs with a blank line, like this. -->
                              real shared count automatically. Do not edit. -->
                         <button class="like-button flex items-center text-gray-500 hover:text-red-500 transition" data-liked="false">
                             <i class="far fa-heart mr-2"></i>
+                            <!--*** Likes #-->
                             <span class="like-count">0</span>
                         </button>
                         <button class="share-button flex items-center text-gray-500 hover:text-indigo-600 transition">
                             <i class="fas fa-share-alt mr-2"></i> Share
                         </button>
                     </div>
+                    <!--*** share link -->
                     <!-- On its own page the entry has no "Read More" link, so
                          likes use this filename and share uses this URL — both
                          automatic, nothing to edit here. -->
                 </div>
 
-                <!-- Back to previous page.
-                     script.js makes this step back through browser history,
+                <!--*** Back to previous page -->
+                <!-- script.js makes this step back through browser history,
                      like the "Go back to previous page" button at the top of
                      the page, so it returns to wherever the visitor came from.
                      The home.html below is only the fallback for when there is

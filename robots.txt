@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Scaffolding for new entries, not real content.
+Disallow: /entry_TEMPLATE.html
+
+Sitemap: https://andyetwego.com/sitemap.xml
