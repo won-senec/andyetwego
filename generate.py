@@ -352,12 +352,21 @@ SITEMAP_SKIP = {"entry_TEMPLATE.html", "index.html", "services.html"}
 # index.html is a redirect stub, so it points at the page it redirects to.
 CANONICAL_OVERRIDE = {"index.html": "home.html"}
 
+# Pages that must stay out of search results entirely. Leaving a page out of
+# sitemap.xml only declines to volunteer it — services.html is linked from the
+# nav on every page, so Google would still crawl and index it, and an "under
+# construction" stub is not what should come up under the site's own name.
+# Drop a page from here and from SITEMAP_SKIP together, once it has content.
+NOINDEX = {"services.html"}
+
 # Whole-line matches, so a replaced tag doesn't leave a blank line behind.
 TITLE_TAG_RE = re.compile(r'([ \t]*)<title>.*?</title>', re.IGNORECASE | re.DOTALL)
 DESC_TAG_RE  = re.compile(r'[ \t]*<meta\s+name=["\']description["\'][^>]*>[ \t]*\n?',
                           re.IGNORECASE)
 CANON_TAG_RE = re.compile(r'[ \t]*<link\s+rel=["\']canonical["\'][^>]*>[ \t]*\n?',
                           re.IGNORECASE)
+ROBOTS_TAG_RE = re.compile(r'[ \t]*<meta\s+name=["\']robots["\'][^>]*>[ \t]*\n?',
+                           re.IGNORECASE)
 
 # "June 24th, 2026" -> "June 24, 2026"
 ORDINAL_RE = re.compile(r'\b(\d{1,2})(st|nd|rd|th)\b', re.IGNORECASE)
@@ -374,10 +383,12 @@ def iso_date(raw: str):
     return None
 
 
-def apply_head_meta(page: Path, title: str, description: str, canonical: str) -> bool:
+def apply_head_meta(page: Path, title: str, description: str, canonical: str,
+                    noindex: bool = False) -> bool:
     """Rewrite the page's <title> and re-emit its description/canonical directly
     beneath it. Idempotent: old tags are stripped first, so re-runs replace
-    rather than accumulate."""
+    rather than accumulate — and dropping a page from NOINDEX removes the tag
+    again rather than leaving it stranded."""
     text = page.read_text(encoding="utf-8")
     original = text
 
@@ -388,13 +399,16 @@ def apply_head_meta(page: Path, title: str, description: str, canonical: str) ->
 
     indent = m.group(1)
     text = text[:m.start()] + "\x00" + text[m.end():]   # placeholder, so removing
-    text = DESC_TAG_RE.sub("", text)                    # the old description and
-    text = CANON_TAG_RE.sub("", text)                   # canonical can't disturb it
+    text = DESC_TAG_RE.sub("", text)                    # the old description,
+    text = CANON_TAG_RE.sub("", text)                   # canonical and robots
+    text = ROBOTS_TAG_RE.sub("", text)                  # tags can't disturb it
     text = text.replace(
         "\x00",
         f'{indent}<title>{_esc(title)}</title>\n'
         f'{indent}<meta name="description" content="{_esc(description)}">\n'
-        f'{indent}<link rel="canonical" href="{_esc(canonical)}">',
+        f'{indent}<link rel="canonical" href="{_esc(canonical)}">'
+        + (f'\n{indent}<meta name="robots" content="noindex, follow">'
+           if noindex else ""),
         1,
     )
 
@@ -465,7 +479,7 @@ def seo_pass() -> None:
             continue
         target = CANONICAL_OVERRIDE.get(name, name)
         url = f"{SITE_URL}/{target}"
-        if apply_head_meta(page, title, description, url):
+        if apply_head_meta(page, title, description, url, noindex=name in NOINDEX):
             touched += 1
         if name not in SITEMAP_SKIP:
             # Home and the listing pages change whenever an entry lands; the
