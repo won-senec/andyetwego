@@ -347,8 +347,9 @@ STATIC_META = {
 #   entry_TEMPLATE.html — scaffolding, not a real entry
 #   index.html          — redirects to home.html, which is listed instead
 #   services.html       — an "under construction" stub; add it once it has content
-#   the two withdrawn Thoughts entries — see NOINDEX below
-# Applies to entries and static pages alike.
+#   the two withdrawn Thoughts entries — deleted from the repo; see NOINDEX below
+# Applies to entries and static pages alike. Naming a file that no longer
+# exists is harmless — nothing matches it — and is deliberate here.
 SITEMAP_SKIP = {
     "entry_TEMPLATE.html",
     "index.html",
@@ -366,10 +367,12 @@ CANONICAL_OVERRIDE = {"index.html": "home.html"}
 # construction" stub is not what should come up under the site's own name.
 # Drop a page from here and from SITEMAP_SKIP together, once it has content.
 #
-# The two Thoughts entries are withdrawn: their cards were removed from
-# home.html and the listing pages, so nothing links to them, but the files are
-# still served and a URL once public can be crawled from anywhere. noindex is
-# what actually keeps them out of results. Applies to entries and static pages.
+# The two Thoughts entries are withdrawn — unlinked, then deleted outright, so
+# their URLs now 404. They stay named here on purpose: restoring either file
+# from git history would otherwise republish it silently on the next run, and
+# quietly making private writing public again is the worse failure. Delete the
+# name from both sets only when the intent really is to publish.
+# Applies to entries and static pages alike.
 NOINDEX = {
     "services.html",
     "entry_Thoughts_love.html",
