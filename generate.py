@@ -347,7 +347,7 @@ STATIC_META = {
 #   entry_TEMPLATE.html — scaffolding, not a real entry
 #   index.html          — redirects to home.html, which is listed instead
 #   services.html       — an "under construction" stub; add it once it has content
-#   the two withdrawn Thoughts entries — deleted from the repo; see NOINDEX below
+#   entry_Thoughts_love.html — withdrawn and deleted from the repo; see NOINDEX below
 # Applies to entries and static pages alike. Naming a file that no longer
 # exists is harmless — nothing matches it — and is deliberate here.
 SITEMAP_SKIP = {
@@ -355,7 +355,6 @@ SITEMAP_SKIP = {
     "index.html",
     "services.html",
     "entry_Thoughts_love.html",
-    "entry_Thoughts_senseofbelonging.html",
 }
 
 # index.html is a redirect stub, so it points at the page it redirects to.
@@ -367,16 +366,16 @@ CANONICAL_OVERRIDE = {"index.html": "home.html"}
 # construction" stub is not what should come up under the site's own name.
 # Drop a page from here and from SITEMAP_SKIP together, once it has content.
 #
-# The two Thoughts entries are withdrawn — unlinked, then deleted outright, so
-# their URLs now 404. They stay named here on purpose: restoring either file
-# from git history would otherwise republish it silently on the next run, and
-# quietly making private writing public again is the worse failure. Delete the
-# name from both sets only when the intent really is to publish.
+# entry_Thoughts_love.html is withdrawn — unlinked, then deleted outright, so
+# its URL now 404s. It stays named here on purpose: restoring the file from git
+# history would otherwise republish it silently on the next run, and quietly
+# making private writing public again is the worse failure. Delete the name from
+# both sets only when the intent really is to publish — as was done for
+# entry_Thoughts_senseofbelonging.html, restored and republished on purpose.
 # Applies to entries and static pages alike.
 NOINDEX = {
     "services.html",
     "entry_Thoughts_love.html",
-    "entry_Thoughts_senseofbelonging.html",
 }
 
 # Whole-line matches, so a replaced tag doesn't leave a blank line behind.

@@ -425,4 +425,87 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    /* =========================================================
+       8. LISTING PAGINATION  (nine cards per page)
+
+       SYSTEMATIC BY DESIGN — no per-page setup beyond one
+       attribute on the grid that holds the cards:
+
+           <div class="grid ..." data-paginate="9">
+
+       Every direct <article> child counts as a card, so the
+       listing pages paginate themselves: add an entry, re-run
+       generate.py, and the page count follows. The nav is written
+       in right below the grid as "Pages 1 2 3 …".
+
+       The chosen page lives in the URL hash (#page=2) so Back,
+       Forward, and a shared link all land on the same page. A
+       hash rather than a query string because it works on file://
+       pages opened by double-clicking, like the rest of the site.
+       Any other fragment (#topics) is left alone, so jumping to
+       another section doesn't knock the reader back to page 1.
+
+       With one page's worth of cards or fewer there is nothing to
+       page through, so no nav is drawn.
+    ========================================================= */
+    document.querySelectorAll('[data-paginate]').forEach(grid => {
+        const perPage = parseInt(grid.dataset.paginate, 10) || 9;
+        const cards = [...grid.children].filter(el => el.matches('article'));
+        const pageCount = Math.ceil(cards.length / perPage);
+        if (pageCount < 2) return;
+
+        // Set by a click on a number, cleared once the scroll it asked for
+        // has happened — Back/Forward changes the page without yanking the
+        // view, a click brings the top of the grid back into sight.
+        let scrollToGrid = false;
+
+        const nav = document.createElement('nav');
+        nav.className = 'pagination';
+        nav.setAttribute('aria-label', 'Entry pages');
+        nav.innerHTML = '<span class="pagination-label">Pages</span>';
+
+        const links = [];
+        for (let n = 1; n <= pageCount; n++) {
+            const link = document.createElement('a');
+            link.href = `#page=${n}`;
+            link.textContent = n;
+            link.addEventListener('click', () => { scrollToGrid = true; });
+            nav.appendChild(link);
+            links.push(link);
+        }
+        grid.insertAdjacentElement('afterend', nav);
+
+        // -> a page number, or null for "a fragment that isn't ours".
+        function pageFromHash() {
+            const hash = window.location.hash;
+            if (!hash) return 1;
+            const match = /^#page=(\d+)$/.exec(hash);
+            if (!match) return null;
+            return Math.min(Math.max(parseInt(match[1], 10), 1), pageCount);
+        }
+
+        function show(page) {
+            cards.forEach((card, i) => {
+                card.classList.toggle('paginate-hidden',
+                                      Math.floor(i / perPage) + 1 !== page);
+            });
+            links.forEach((link, i) => {
+                if (i + 1 === page) link.setAttribute('aria-current', 'page');
+                else link.removeAttribute('aria-current');
+            });
+        }
+
+        show(pageFromHash() || 1);
+
+        window.addEventListener('hashchange', () => {
+            const page = pageFromHash();
+            if (!page) return;
+            show(page);
+            if (scrollToGrid) {
+                scrollToGrid = false;
+                grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
 });

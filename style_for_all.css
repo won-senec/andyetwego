@@ -671,3 +671,50 @@ a.badge:hover { filter: brightness(.96); opacity: .9; }
 .ph-thoughts  { --ph-fg: #2f6f9e; --ph-dot: rgba(93, 163, 220, .22); --ph-bg: #edf4fb; --ph-chip: rgba(255, 255, 255, .82); --ph-glow: rgba(255, 255, 255, .6);  }
 .ph-creations { --ph-fg: #326080; --ph-dot: rgba(50, 96, 128, .20);  --ph-bg: #eef2f6; --ph-chip: rgba(255, 255, 255, .82); --ph-glow: rgba(255, 255, 255, .55); }
 .ph-reviews   { --ph-fg: #805232; --ph-dot: rgba(128, 82, 50, .20);  --ph-bg: #f7f1ea; --ph-chip: rgba(255, 255, 255, .85); --ph-glow: rgba(255, 247, 240, .6);  }
+
+
+/* ============================================================
+   13. LISTING PAGINATION  ("Pages 1 2 3 …" under a card grid)
+   The nav itself is built by script.js for any grid carrying
+   data-paginate, so this is the only styling it needs.
+   ============================================================ */
+/* Tailwind's Play CDN injects after this file, hence !important —
+   same reason the indigo mappings above need it. */
+.paginate-hidden { display: none !important; }
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin-top: 2.75rem;
+}
+.pagination .pagination-label {
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: #6b7683;
+    margin-right: .45rem;
+}
+.pagination a {
+    min-width: 2.3rem;
+    padding: .42rem .7rem;
+    border: 1px solid rgba(40, 50, 61, .14);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--dark);
+    font-size: .9rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: var(--transition);
+}
+.pagination a:hover { border-color: var(--primary); color: var(--primary); }
+.pagination a[aria-current="page"] {
+    background: var(--slate);
+    border-color: var(--slate);
+    color: #fff;
+    cursor: default;
+}
