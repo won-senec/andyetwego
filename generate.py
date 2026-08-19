@@ -114,6 +114,12 @@ def _new_badge(d: dict) -> str:
     return ' <span class="badge badge-new ml-2">New</span>' if d.get("new") else ""
 
 
+def _date_span(d: dict, pad: str) -> str:
+    """Date line, omitted entirely for entries that carry no <!--*** Date --> marker."""
+    return (f'\n{pad}<span class="text-gray-400 text-sm ml-4">{_esc(d["date"])}</span>'
+            if d["date"] else "")
+
+
 # ----------------------------------------------------------------------
 # Card templates
 # ----------------------------------------------------------------------
@@ -171,8 +177,7 @@ def thumbnail_card(d: dict, indent: str) -> str:
     {image}
     <div class="p-6">
         <div class="flex items-center mb-4">
-            {_topic_badge(d)}{_new_badge(d)}
-            <span class="text-gray-400 text-sm ml-4">{_esc(d["date"])}</span>
+            {_topic_badge(d)}{_new_badge(d)}{_date_span(d, " " * 12)}
         </div>
         <h3 class="text-lg font-bold mb-3 text-gray-900">{_esc(d["title"])}</h3>
         <p class="text-gray-600 mb-4">{_esc(d["tagline"])}</p>
@@ -200,8 +205,7 @@ def featured_card(d: dict, indent: str) -> str:
     <div class="flex flex-col md:flex-row">
         <div class="md:w-1/2 p-8 flex flex-col justify-center">
             <div class="flex items-center mb-4">
-                {_topic_badge(d)}{_new_badge(d)}
-                <span class="text-gray-400 text-sm ml-4">{_esc(d["date"])}</span>
+                {_topic_badge(d)}{_new_badge(d)}{_date_span(d, " " * 16)}
             </div>
             <h3 class="text-2xl font-bold mb-4 text-gray-900">{_esc(d["title"])}</h3>
             <p class="text-gray-600 mb-6">{_esc(d["tagline"])}</p>
