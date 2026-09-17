@@ -338,7 +338,8 @@ STATIC_META = {
     ),
     "services.html": (
         f"Services — {BRAND}",
-        "Services from Won Kyun Koh — currently under construction.",
+        "STEM career consulting for graduate students and early-career scientists, "
+        "plus help building your own website and a (virtual) coffee chat with Won Kyun Koh.",
     ),
     "contact.html": (
         f"Contact — {BRAND}",
@@ -350,23 +351,21 @@ STATIC_META = {
 # Committed and publicly reachable, but deliberately kept out of sitemap.xml:
 #   entry_TEMPLATE.html — scaffolding, not a real entry
 #   index.html          — redirects to home.html, which is listed instead
-#   services.html       — an "under construction" stub; add it once it has content
 # Applies to entries and static pages alike. Naming a file that no longer
 # exists is harmless — nothing matches it — and is deliberate here.
 SITEMAP_SKIP = {
     "entry_TEMPLATE.html",
     "index.html",
-    "services.html",
 }
 
 # index.html is a redirect stub, so it points at the page it redirects to.
 CANONICAL_OVERRIDE = {"index.html": "home.html"}
 
 # Pages that must stay out of search results entirely. Leaving a page out of
-# sitemap.xml only declines to volunteer it — services.html is linked from the
-# nav on every page, so Google would still crawl and index it, and an "under
-# construction" stub is not what should come up under the site's own name.
-# Drop a page from here and from SITEMAP_SKIP together, once it has content.
+# sitemap.xml only declines to volunteer it — a page linked from the nav on every
+# page (as services.html was while it was an "under construction" stub, until
+# September 17th 2026) would still be crawled and indexed. Drop a page from here
+# and from SITEMAP_SKIP together, once it has content.
 #
 # A withdrawn entry belongs in both this set and SITEMAP_SKIP, so that restoring
 # the file from git history cannot republish it silently on the next run —
@@ -375,9 +374,7 @@ CANONICAL_OVERRIDE = {"index.html": "home.html"}
 # entry_Thoughts_senseofbelonging.html and, on September 1st 2026, for
 # entry_Thoughts_love.html — each withdrawn, then republished on purpose.
 # Applies to entries and static pages alike.
-NOINDEX = {
-    "services.html",
-}
+NOINDEX = set()
 
 # Whole-line matches, so a replaced tag doesn't leave a blank line behind.
 TITLE_TAG_RE = re.compile(r'([ \t]*)<title>.*?</title>', re.IGNORECASE | re.DOTALL)

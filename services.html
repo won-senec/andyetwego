@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Services — and yet we go</title>
-    <meta name="description" content="Services from Won Kyun Koh — currently under construction.">
+    <meta name="description" content="STEM career consulting for graduate students and early-career scientists, plus help building your own website and a (virtual) coffee chat with Won Kyun Koh.">
     <link rel="canonical" href="https://andyetwego.com/services.html">
-    <meta name="robots" content="noindex, follow">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="favicon.ico" sizes="any">
@@ -20,6 +19,65 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="stylesheet" href="style_for_all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ---------- Services page ----------
+           Body copy deliberately avoids .article-text: script.js rewrites that
+           class (newlines become <br>, blank lines become <p>), which breaks
+           hand-written paragraphs and lists. */
+        .svc-prose { font-size: 1.05rem; line-height: 1.85; color: #4b5563; }
+        .svc-prose p + p { margin-top: 1.25rem; }
+        /* justify only the long consulting copy; short, narrow cards get rivers */
+        @media (min-width: 640px) { .svc-justify p { text-align: justify; } }
+
+        .svc-eyebrow { font-size: .8rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+
+        .svc-icon { width: 2.75rem; height: 2.75rem; border-radius: .75rem; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        .svc-icon-brown { background: rgba(128, 82, 50, .12); color: var(--accent); }
+        .svc-icon-slate { background: rgba(50, 96, 128, .12); color: var(--primary); }
+        .svc-icon-sky   { background: rgba(93, 163, 220, .16); color: #2f6f9e; }
+        .svc-icon-light { background: rgba(255, 255, 255, .14); color: #fff; }
+
+        /* jump tiles in the intro card */
+        .svc-tile { display: flex; flex-direction: column; gap: .8rem; padding: 1.25rem; border-radius: .9rem; background: #FAF7F1; border: 1px solid transparent; text-decoration: none; transition: transform .2s ease, border-color .2s ease, background-color .2s ease; }
+        .svc-tile:hover { transform: translateY(-3px); border-color: rgba(128, 82, 50, .28); background: #fff; }
+        .svc-tile-title { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 1.1rem; line-height: 1.3; color: #28323d; }
+        .svc-tile-desc { font-size: .9rem; line-height: 1.55; color: #6b7280; }
+        .svc-tile-go { margin-top: auto; font-size: .8rem; color: var(--accent); }
+
+        /* the program-director story */
+        .svc-story { background: #FAF7F1; border-left: 3px solid var(--accent); border-radius: 0 .75rem .75rem 0; padding: 1.25rem 1.5rem; color: #374151; }
+        .svc-prose .svc-story { margin-top: 1.75rem; }
+
+        /* consulting topics */
+        .svc-lead { font-size: 1.05rem; line-height: 1.7; color: #4b5563; }
+        .svc-lead strong { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 1.2rem; color: #28323d; display: block; margin-bottom: .15rem; }
+        .svc-topic { background: #FAF7F1; border-radius: .9rem; padding: 1.5rem; }
+        .svc-num { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: 999px; background: var(--accent); color: #fff; font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: .95rem; }
+        .svc-topic h3 { font-size: 1.15rem; line-height: 1.35; color: #28323d; margin: .8rem 0 .5rem; }
+
+        .svc-list { list-style: none; margin: 0; padding: 0; color: #4b5563; font-size: .98rem; line-height: 1.6; }
+        .svc-list > li { position: relative; padding-left: 1.1rem; margin-top: .45rem; }
+        .svc-list > li::before { content: ""; position: absolute; left: 0; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: #5da3dc; }
+        .svc-list ul { list-style: none; margin: .25rem 0 0; padding: 0; }
+        .svc-list ul > li { position: relative; padding-left: 1rem; margin-top: .2rem; color: #6b7280; font-size: .93rem; }
+        .svc-list ul > li::before { content: ""; position: absolute; left: 0; top: .6em; width: 6px; height: 6px; border-radius: 50%; border: 1.5px solid #84acce; }
+        .svc-list ul ul > li::before { width: 7px; height: 1.5px; border: 0; border-radius: 0; background: #b6bcc4; top: .8em; }
+
+        /* how to reach me */
+        .svc-reach { position: relative; background: var(--primary); color: #fff; }
+        .svc-reach::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255, 255, 255, .11) 1.3px, transparent 1.3px); background-size: 20px 20px; pointer-events: none; }
+        .svc-reach > * { position: relative; }
+        main .svc-reach h2 { color: #fff; }
+        .svc-reach p { color: var(--secondary); line-height: 1.75; }
+        .svc-reach p a { color: #fff; font-weight: 600; text-decoration: underline; text-decoration-color: rgba(255, 255, 255, .45); text-underline-offset: 3px; }
+
+        .svc-q { counter-reset: q; list-style: none; margin: 0; padding: 0; }
+        .svc-q li { counter-increment: q; position: relative; padding-left: 2.75rem; color: #28323d; line-height: 1.55; }
+        .svc-q li + li { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #f1ede6; }
+        .svc-q li::before { content: counter(q); position: absolute; left: 0; top: -.1rem; width: 1.9rem; height: 1.9rem; border-radius: 50%; background: rgba(128, 82, 50, .12); color: var(--accent); font-weight: 600; font-size: .85rem; display: flex; align-items: center; justify-content: center; }
+        .svc-q li + li::before { top: .9rem; }
+        .svc-q .svc-hint { display: block; margin-top: .2rem; font-size: .9rem; color: #6b7280; }
+    </style>
 </head>
 
 <body class="min-h-screen">
@@ -74,35 +132,164 @@
         </div>
 
         <!-- Services Section -->
-        <section class="max-w-3xl mx-auto">
+        <section class="max-w-4xl mx-auto space-y-8">
 
-            <div class="post-card bg-white p-10 sm:p-14 rounded-xl border border-gray-100 animate-fade-in text-center">
+            <!-- Intro: title + a tile for each service -->
+            <div class="post-card bg-white p-6 sm:p-10 rounded-xl border border-gray-100 animate-fade-in">
+                <p class="svc-eyebrow mb-2">Services</p>
+                <h1 class="text-3xl sm:text-4xl font-bold mb-8 text-gray-900">How I can help</h1>
 
-                <!-- Under-construction illustration -->
-                <img src="images/under-construction.svg"
-                     alt="Under construction illustration"
-                     class="w-64 max-w-full mx-auto mb-10">
-
-                <p class="text-sm font-semibold uppercase tracking-wide mb-3" style="color: var(--accent);">Services</p>
-                <h1 class="text-3xl sm:text-4xl font-bold mb-5 text-gray-900">Under construction</h1>
-
-                <p class="text-gray-600 leading-relaxed max-w-xl mx-auto mb-8">
-                    I&rsquo;m still shaping what I&rsquo;d like to offer here. This page is being built
-                    and will be updated soon &mdash; thank you for your patience while I get it right.
-                </p>
-
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="#subscribe"
-                       class="inline-flex items-center justify-center px-6 py-3 rounded-lg text-white font-medium transition"
-                       style="background: var(--accent);">
-                        <i class="fas fa-envelope mr-2"></i> Get notified when it&rsquo;s ready
+                <div class="grid sm:grid-cols-3 gap-4">
+                    <a href="#consulting" class="svc-tile">
+                        <span class="svc-icon svc-icon-brown"><i class="fas fa-flask" aria-hidden="true"></i></span>
+                        <span class="svc-tile-title">STEM career consulting</span>
+                        <span class="svc-tile-desc">Surviving grad school, breaking into industry, and thriving there.</span>
+                        <span class="svc-tile-go"><i class="fas fa-arrow-down" aria-hidden="true"></i></span>
                     </a>
-                    <a href="contact.html"
-                       class="inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium border border-gray-200 text-gray-700 hover:text-indigo-600 hover:border-indigo-200 transition">
-                        <i class="fas fa-paper-plane mr-2"></i> Reach out in the meantime
+                    <a href="#website-design" class="svc-tile">
+                        <span class="svc-icon svc-icon-slate"><i class="fas fa-laptop-code" aria-hidden="true"></i></span>
+                        <span class="svc-tile-title">Website design</span>
+                        <span class="svc-tile-desc">Build your own site from scratch with AI.</span>
+                        <span class="svc-tile-go"><i class="fas fa-arrow-down" aria-hidden="true"></i></span>
+                    </a>
+                    <a href="#coffee-chat" class="svc-tile">
+                        <span class="svc-icon svc-icon-sky"><i class="fas fa-mug-hot" aria-hidden="true"></i></span>
+                        <span class="svc-tile-title">Coffee chat</span>
+                        <span class="svc-tile-desc">Talk through an entry that stayed with you.</span>
+                        <span class="svc-tile-go"><i class="fas fa-arrow-down" aria-hidden="true"></i></span>
                     </a>
                 </div>
+            </div>
 
+            <!-- STEM career consulting -->
+            <div id="consulting" class="post-card bg-white p-6 sm:p-10 rounded-xl border border-gray-100 animate-fade-in scroll-mt-24">
+                <div class="flex items-center gap-4 mb-8">
+                    <span class="svc-icon svc-icon-brown"><i class="fas fa-flask" aria-hidden="true"></i></span>
+                    <h2 class="text-2xl sm:text-3xl font-bold">STEM career consulting</h2>
+                </div>
+
+                <div class="svc-prose svc-justify">
+                    <p>I was once a STEM graduate student who spent nights and weekends in the lab, driven by curiosity. As an international student on an F-1 visa, I also lived with constant uncertainty about stability, identity, and what came next. I wasn&rsquo;t a standout student or a star researcher. I failed many times, and yet I kept going, stayed on track, and eventually moved into the biotech and pharmaceutical industry.</p>
+                    <p>During my PhD, I focused on hematopoietic stem cell research. While preparing for my thesis defense, I found a LinkedIn posting for a senior scientist position at Novartis and reached out directly to the hiring manager. They were looking for someone with a hematology background to join their in vivo gene therapy program for sickle cell disease, and I got the job. That was my entry into industry, and I&rsquo;ve worked in drug development ever since.</p>
+                    <p>Graduate school doesn&rsquo;t teach you how to find a job. Nobody shows you how to find mentors, write a cold email, or ask for an informational interview. Much of what I learned came from searching online and from people willing to give me their time.</p>
+                    <p class="svc-story">One of them was a program director I reached out to near the end of my time at Novartis. We had never met. I asked for a casual coffee chat, and before I could even explain why, she understood that I was about to be back on the job market with a family depending on me. She listened to me as a person, not just as a scientist. I&rsquo;ve never forgotten it.</p>
+                </div>
+
+                <div class="mt-10 pt-10 border-t border-gray-100">
+                    <p class="svc-lead mb-6"><strong>That&rsquo;s the kind of conversation I want to offer.</strong> Here&rsquo;s what I can help with:</p>
+
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div class="svc-topic">
+                            <span class="svc-num">1</span>
+                            <h3>Surviving STEM graduate school in the United States</h3>
+                            <ul class="svc-list">
+                                <li>Setting expectations</li>
+                                <li>Applying and finding mentors</li>
+                                <li>Mindset and mental health</li>
+                                <li>Resources and skills your school can offer</li>
+                            </ul>
+                        </div>
+
+                        <div class="svc-topic">
+                            <span class="svc-num">2</span>
+                            <h3>Breaking into industry</h3>
+                            <ul class="svc-list">
+                                <li>Building your presence in the job market
+                                    <ul>
+                                        <li>LinkedIn</li>
+                                        <li>CV</li>
+                                        <li>AI</li>
+                                        <li>Networking</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="svc-topic md:col-span-2">
+                            <span class="svc-num">3</span>
+                            <h3>Surviving vs. thriving</h3>
+                            <div class="grid sm:grid-cols-2 sm:gap-x-8">
+                                <ul class="svc-list">
+                                    <li>Understanding expectations</li>
+                                    <li>Finding mentors
+                                        <ul>
+                                            <li>It takes time and effort, but it can be fun</li>
+                                        </ul>
+                                    </li>
+                                    <li>Mental strength</li>
+                                    <li>Finding resources</li>
+                                    <li>Networking
+                                        <ul>
+                                            <li>Nobody will spoon-feed you on this one</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul class="svc-list">
+                                    <li>Understanding your career trajectory
+                                        <ul>
+                                            <li>What kinds of objectives or tasks do you enjoy?</li>
+                                            <li>An industry career is never straightforward
+                                                <ul>
+                                                    <li>It is not academia</li>
+                                                    <li>Transition periods: no judgment here, only mental strength matters</li>
+                                                    <li>Job titles don&rsquo;t mean much</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Website design + Coffee chat -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <div id="website-design" class="post-card bg-white p-6 sm:p-10 rounded-xl border border-gray-100 animate-fade-in scroll-mt-24">
+                    <div class="flex items-center gap-4 mb-5">
+                        <span class="svc-icon svc-icon-slate"><i class="fas fa-laptop-code" aria-hidden="true"></i></span>
+                        <h2 class="text-2xl font-bold">Website design</h2>
+                    </div>
+                    <div class="svc-prose">
+                        <p>Want to build your own website from scratch with AI (&ldquo;vibe coding&rdquo;)? I built this site that way. I&rsquo;ll share what worked, what didn&rsquo;t, and help you get started.</p>
+                    </div>
+                </div>
+
+                <div id="coffee-chat" class="post-card bg-white p-6 sm:p-10 rounded-xl border border-gray-100 animate-fade-in scroll-mt-24">
+                    <div class="flex items-center gap-4 mb-5">
+                        <span class="svc-icon svc-icon-sky"><i class="fas fa-mug-hot" aria-hidden="true"></i></span>
+                        <h2 class="text-2xl font-bold">Coffee chat</h2>
+                    </div>
+                    <div class="svc-prose">
+                        <p>Did an entry stay with you? Reach out. Let&rsquo;s grab a (virtual) coffee and trade thoughts.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How to reach me -->
+            <div id="reach-me" class="post-card bg-white rounded-xl border border-gray-100 overflow-hidden animate-fade-in scroll-mt-24">
+                <div class="grid md:grid-cols-5">
+                    <div class="svc-reach md:col-span-2 p-6 sm:p-10 flex flex-col">
+                        <span class="svc-icon svc-icon-light mb-5"><i class="fas fa-paper-plane" aria-hidden="true"></i></span>
+                        <h2 class="text-2xl sm:text-3xl font-bold mb-4">How to reach me</h2>
+                        <p>Whichever service interests you, send me a message through the <a href="contact.html">Contact page</a> and tell me which one you have in mind.</p>
+                    </div>
+
+                    <div class="md:col-span-3 p-6 sm:p-10">
+                        <p class="svc-eyebrow mb-2">STEM career consulting</p>
+                        <p class="font-semibold text-gray-900 mb-6">Please also answer these in your message:</p>
+                        <ol class="svc-q">
+                            <li>What best describes your current career status?
+                                <span class="svc-hint">Undergraduate student, graduate student, job seeker, or working</span></li>
+                            <li>What is your degree or field of interest?
+                                <span class="svc-hint">e.g., molecular biology, chemical engineering</span></li>
+                            <li>In 1&ndash;2 sentences, tell me about yourself and your career goals.</li>
+                            <li>Is there anything specific you&rsquo;d like to work on?
+                                <span class="svc-hint">e.g., finding a mentor, updating your CV or LinkedIn, preparing to move from academia to industry</span></li>
+                        </ol>
+                    </div>
+                </div>
             </div>
 
         </section>
