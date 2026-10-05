@@ -295,6 +295,9 @@ def process_page(page: Path) -> int:
 # Search-engine metadata: per-page head tags, sitemap.xml, robots.txt
 # ----------------------------------------------------------------------
 SITE_URL = "https://andyetwego.com"     # apex; www and http both 301 here
+# Fallback preview picture, for the entries that open on a topic placeholder
+# rather than a photo. 1200x630 is the Open Graph standard size.
+OG_DEFAULT_IMAGE = "images/og-default.png"
 BRAND = "and yet we go"
 
 # Pages with no <!--*** --> markers to read from, so their metadata lives here.
@@ -384,6 +387,9 @@ CANON_TAG_RE = re.compile(r'[ \t]*<link\s+rel=["\']canonical["\'][^>]*>[ \t]*\n?
                           re.IGNORECASE)
 ROBOTS_TAG_RE = re.compile(r'[ \t]*<meta\s+name=["\']robots["\'][^>]*>[ \t]*\n?',
                            re.IGNORECASE)
+OG_TAG_RE = re.compile(
+    r'[ \t]*<meta\s+(?:property|name)=["\'](?:og:|twitter:)[^"\']*["\'][^>]*>[ \t]*\n?',
+    re.IGNORECASE)
 
 # "June 24th, 2026" -> "June 24, 2026"
 ORDINAL_RE = re.compile(r'\b(\d{1,2})(st|nd|rd|th)\b', re.IGNORECASE)
@@ -401,7 +407,8 @@ def iso_date(raw: str):
 
 
 def apply_head_meta(page: Path, title: str, description: str, canonical: str,
-                    noindex: bool = False) -> bool:
+                    noindex: bool = False, image: str = "",
+                    og_type: str = "website") -> bool:
     """Rewrite the page's <title> and re-emit its description/canonical directly
     beneath it. Idempotent: old tags are stripped first, so re-runs replace
     rather than accumulate — and dropping a page from NOINDEX removes the tag
@@ -419,11 +426,19 @@ def apply_head_meta(page: Path, title: str, description: str, canonical: str,
     text = DESC_TAG_RE.sub("", text)                    # the old description,
     text = CANON_TAG_RE.sub("", text)                   # canonical and robots
     text = ROBOTS_TAG_RE.sub("", text)                  # tags can't disturb it
+    text = OG_TAG_RE.sub("", text)                      # (and the preview tags)
     text = text.replace(
         "\x00",
         f'{indent}<title>{_esc(title)}</title>\n'
         f'{indent}<meta name="description" content="{_esc(description)}">\n'
-        f'{indent}<link rel="canonical" href="{_esc(canonical)}">'
+        f'{indent}<link rel="canonical" href="{_esc(canonical)}">\n'
+        f'{indent}<meta property="og:type" content="{og_type}">\n'
+        f'{indent}<meta property="og:site_name" content="{_esc(BRAND)}">\n'
+        f'{indent}<meta property="og:title" content="{_esc(title)}">\n'
+        f'{indent}<meta property="og:description" content="{_esc(description)}">\n'
+        f'{indent}<meta property="og:url" content="{_esc(canonical)}">\n'
+        f'{indent}<meta property="og:image" content="{_esc(image)}">\n'
+        f'{indent}<meta name="twitter:card" content="summary_large_image">'
         + (f'\n{indent}<meta name="robots" content="noindex, follow">'
            if noindex else ""),
         1,
@@ -482,8 +497,12 @@ def seo_pass() -> None:
         title = d["title"]
         description = d["tagline"] or f"{title} — an entry on {BRAND}."
         url = f"{SITE_URL}/{page.name}"
+        # og:image must be absolute; entries that open on a placeholder have no
+        # picture of their own, so they fall back to the share card.
+        og_image = f"{SITE_URL}/{d['img_src'] or OG_DEFAULT_IMAGE}"
         if apply_head_meta(page, f"{title} — {BRAND}", description, url,
-                           noindex=page.name in NOINDEX):
+                           noindex=page.name in NOINDEX,
+                           image=og_image, og_type="article"):
             touched += 1
         if page.name in SITEMAP_SKIP:
             # Withdrawn: keep it out of the sitemap, and out of the newest-entry
@@ -501,7 +520,8 @@ def seo_pass() -> None:
             continue
         target = CANONICAL_OVERRIDE.get(name, name)
         url = f"{SITE_URL}/{target}"
-        if apply_head_meta(page, title, description, url, noindex=name in NOINDEX):
+        if apply_head_meta(page, title, description, url, noindex=name in NOINDEX,
+                           image=f"{SITE_URL}/{OG_DEFAULT_IMAGE}"):
             touched += 1
         if name not in SITEMAP_SKIP:
             # Home and the listing pages change whenever an entry lands; the
