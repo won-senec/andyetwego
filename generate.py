@@ -477,11 +477,31 @@ def write_robots() -> None:
     )
 
 
+def build_preview_cards() -> None:
+    """Refresh images/og/ so every entry with a photo has a 1200x630 card.
+
+    Pillow is the only thing in this project that is not standard library, so a
+    missing install prints a notice instead of failing: the pages, the sitemap
+    and the site all still build, and those entries fall back to their hero
+    photo until someone runs it."""
+    if not (HERE / "make_og.py").exists():
+        return
+    try:
+        import make_og
+    except ImportError:
+        print("  ! Pillow not installed, preview images not refreshed "
+              "(pip install Pillow, then re-run)")
+        return
+    make_og.main()
+
+
 def seo_pass() -> None:
     """Refresh head metadata on every page, then rewrite sitemap.xml/robots.txt."""
     entry_urls = []
     newest = None
     touched = 0
+
+    build_preview_cards()
 
     for page in sorted(HERE.glob("entry_*.html")):
         if page.name == "entry_TEMPLATE.html":

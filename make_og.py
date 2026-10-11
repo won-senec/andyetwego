@@ -57,14 +57,13 @@ def build(src: Path, dest: Path) -> str:
 
 def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    made = skipped = 0
+    made = skipped = fresh = 0
     for entry in sorted(HERE.glob("entry_*.html")):
         if entry.name == "entry_TEMPLATE.html":
             continue
         rel = hero(entry)
         if not rel:
-            print(f"  - {entry.name}: no hero photo, keeps the share card")
-            skipped += 1
+            skipped += 1          # opens on a topic placeholder; share card is right
             continue
         src = HERE / rel
         if not src.exists():
@@ -72,10 +71,14 @@ def main():
             skipped += 1
             continue
         dest = OUT_DIR / f"{entry.stem.lower()}.jpg"
+        if dest.exists() and dest.stat().st_mtime >= src.stat().st_mtime:
+            fresh += 1
+            continue
         note = build(src, dest)
         print(f"  + {dest.relative_to(HERE)}  ({note})")
         made += 1
-    print(f"\nDone. {made} preview image(s) written, {skipped} left on the share card.")
+    print(f"  + preview images: {made} written, {fresh} already current, "
+          f"{skipped} on the share card")
 
 
 if __name__ == "__main__":
