@@ -497,9 +497,12 @@ def seo_pass() -> None:
         title = d["title"]
         description = d["tagline"] or f"{title} — an entry on {BRAND}."
         url = f"{SITE_URL}/{page.name}"
-        # og:image must be absolute; entries that open on a placeholder have no
-        # picture of their own, so they fall back to the share card.
-        og_image = f"{SITE_URL}/{d['img_src'] or OG_DEFAULT_IMAGE}"
+        # og:image must be absolute, and platforms only render the large preview
+        # card at 1200x627 or above. make_og.py writes those to images/og/;
+        # fall back to the entry's own photo, then to the share card.
+        og_card = f"images/og/{page.stem.lower()}.jpg"
+        og_rel = og_card if (HERE / og_card).exists() else (d['img_src'] or OG_DEFAULT_IMAGE)
+        og_image = f"{SITE_URL}/{og_rel}"
         if apply_head_meta(page, f"{title} — {BRAND}", description, url,
                            noindex=page.name in NOINDEX,
                            image=og_image, og_type="article"):
