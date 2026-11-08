@@ -298,6 +298,13 @@ SITE_URL = "https://andyetwego.com"     # apex; www and http both 301 here
 # Fallback preview picture, for the entries that open on a topic placeholder
 # rather than a photo. 1200x630 is the Open Graph standard size.
 OG_DEFAULT_IMAGE = "images/og-default.png"
+
+# Standing pages that have a card of their own rather than the share card.
+# Entries do not need an entry here: generate.py already prefers
+# images/og/<entry file, lowercased>.jpg whenever that file exists.
+OG_IMAGE_OVERRIDE = {
+    "services.html": "images/og/services.jpg",
+}
 BRAND = "and yet we go"
 
 # Pages with no <!--*** --> markers to read from, so their metadata lives here.
@@ -543,8 +550,9 @@ def seo_pass() -> None:
             continue
         target = CANONICAL_OVERRIDE.get(name, name)
         url = f"{SITE_URL}/{target}"
+        og_rel = OG_IMAGE_OVERRIDE.get(name, OG_DEFAULT_IMAGE)
         if apply_head_meta(page, title, description, url, noindex=name in NOINDEX,
-                           image=f"{SITE_URL}/{OG_DEFAULT_IMAGE}"):
+                           image=f"{SITE_URL}/{og_rel}"):
             touched += 1
         if name not in SITEMAP_SKIP:
             # Home and the listing pages change whenever an entry lands; the

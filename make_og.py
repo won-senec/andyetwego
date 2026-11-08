@@ -11,6 +11,9 @@ generate.py prefers that file when it exists, falls back to the entry's hero
 photo, then to images/og-default.png.
 
 Run after adding an entry that has a hero photo:   python3 make_og.py
+
+Hand-made cards may also sit in images/og/ for entries with no hero photo.
+They are left alone: an entry with no photo is skipped, never overwritten.
 Needs Pillow.  Entries that open on a topic placeholder are skipped on purpose —
 they keep the default share card.
 """
